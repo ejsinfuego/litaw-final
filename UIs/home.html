@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"  rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: {
+          "navy-blue": "#084D8B",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar-top relative bg-gradient-to-tr py-12 bg-center">
+    <img src="/assets/img/nav-top.jpg" alt="Navbar Image" class="absolute inset-0 w-full h-full object-cover opacity-50">
+    <div class="absolute inset-0 bg-white opacity-30"></div>
+    <div class="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-white to-transparent opacity-500"></div>
+    <div class="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-white to-transparent opacity-200"></div>
+  </nav>
+
+  <nav class="bg-navy-blue px-10 shadow-md">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 transition duration-700 ease-in-out">
+      <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white md:hidden" aria-controls="navbar-dropdown" aria-expanded="false" onclick="toggleLoginNavItem()">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+      </button>      
+      <div class="hidden w-full md:flex md:w-auto md:items-center md:justify-center" id="navbar-dropdown">
+        <ul class="flex flex-col md:p-0 mt-4 rounded-lg bg-navy-blue md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-navy-blue dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 justify-center">
+          <li>
+            <a href="/home.html" class="block py-2 pl-3 pr-4 text-white md:p-0" aria-current="page">Home</a>
+          </li>
+          <li>
+            <a href="/about.html" class="block py-2 pl-3 pr-4 text-white md:p-0">About</a>
+          </li>
+          <li>
+            <a href="/Theses.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Theses</a>
+          </li>
+          <li>
+            <a href="/journal.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Journals</a>
+          </li>
+          <li>
+            <a href="/statistics.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Statistics</a>
+          </li>
+          <li>
+            <a href="/submit.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Submit Manuscript</a>
+          </li> 
+        </ul>               
+      </div>
+      <div class="flex flex-col md:flex-row md:items-center">
+        <div class="relative">
+          <select id="default" class="w-full md:w-0 py-2.5 px-0.5 text-sm font-medium text-gray-900 bg-gray-100 block w-40 p-2.5 border border-gray-300  md:rounded-l-md hover:bg-gray-200 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500">
+            <option selected>All colleges</option>
+            <option value="US">Arts and Science</option>
+            <option value="CA">Business and Management</option>
+            <option value="FR">Education</option>
+            <option value="DE">Engineering and Technology</option>
+          </select>
+        </div>
+        <div class="relative w-full mt-3 md:mt-0 md:w-auto">
+          <input type="search" id="search-dropdown" class="w-full md:w-96 py-2.5 px-2 text-sm text-gray-900 bg-gray-50 md:rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search" required>
+          <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+            <span class="sr-only">Search</span>
+          </button>
+        </div>
+      </div>
+      <li id="loginNavItem" class="hidden md:block list-none">       
+        <div class="md:flex items-center justify-end">
+          <a href="#" class="block py-1.5 px-1 font-medium w-24 text-white bg-orange-600 hover:bg-transparent hover:border-white border-orange-600 inline-flex items-center justify-center space-x-1 rounded-lg border" onclick="toggleLoginModal()">
+            <span>Login</span>
+          </a>               
+        </div>  
+      </li>
+    </div>
+  </nav>
+  <div id="loginModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onclick="hideLoginModal()">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <form class="bg-white border rounded-md shadow-md p-8" id="loginForm">
+          <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
+          <div class="relative z-0 w-full mb-6 group">
+            <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+          </div>
+          <div class="relative z-0 w-full mb-6 group">
+            <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+          </div>
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+              <input id="remember" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+              <label for="remember" class="ml-2 text-sm text-gray-900 dark:text-gray-300">Remember me</label>
+            </div>
+            <div class="text-sm">
+              <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Forgot password?</a>
+            </div>
+          </div>
+          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+          <div class="flex items-center justify-center mt-2">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Not Registered? <a href="/signup.html" class="text-blue-600 dark:text-blue-500 hover:underline">Create Account</a></p>
+          </div> 
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden  md:h-96">
+      <!-- Item 1 -->
+      <div class="hidden duration-100 ease-in-out" data-carousel-item>
+        <img src="/assets/img/bee.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+      <!-- Item 2 -->
+      <div class="hidden duration-100 ease-in-out" data-carousel-item>
+        <img src="/assets/img/CAP2-PR1.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+    </div>
+    <!-- Slider indicators -->
+    <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+    </div>
+    <!-- Slider controls -->
+    <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+        </svg>
+        <span class="sr-only">Previous</span>
+      </span>
+    </button>
+    <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        </svg>
+        <span class="sr-only">Next</span>
+      </span>
+    </button>
+  </div>
+  
+  <section class="py-8">
+    <div class="container mx-auto px-4 md:px-0">
+      <h2 class="text-4xl font-bold mb-4 text-center text-gray-700">COLLEGES</h2>
+      <p class="text-center text-gray-600">Select colleges to browse thesis and academic works</p>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 md:px-20 px-0">
+        <a href="/colleges.html" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+          <div class="college-image">
+            <img src="/assets/img/CAS-logo.png" alt="CAS">
+          </div>
+          <div class="college-content py-3">
+            <h3 class="text-lg font-bold text-gray-700">Arts and Science</h3>
+            <p class="text-gray-600 college-description text-sm text-justify">Produce globally competitive graduates equipped with high ethical standard of professionalism in the field of Arts and Sciences.</p>
+          </div>
+        </a>
+        
+        <a href="/colleges.html" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+          <div class="college-image">
+            <img src="/assets/img/cbm_logo_new.png" alt="CBM">
+          </div>
+          <div class="college-content py-3">
+            <h3 class="bg-white text-lg font-bold text-gray-700">Business and Management</h3>
+            <p class="text-gray-600 college-description text-sm text-justify">Produce globally competitive, value-laden professionals/entrepreneurs who can create social, environmental, and economic impact through research and community services.</p>
+          </div>
+        </a>
+        
+        <a href="/colleges.html" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+          <div class="college-image">
+            <img src="/assets/img/COED-logo1.png" alt="COED">
+          </div>
+          <div class="college-content py-3">
+            <h3 class="text-lg font-bold text-gray-700">Education</h3>
+            <p class="text-gray-600 college-description text-sm text-justify">The College of Education shall be the center for training, research and extension programs in Teacher Education for effective, morally, socially, culturally and environmentally-responsible Teacher Education leaders committed to pursuing academic excellence.</p>
+          </div>
+        </a>
+        <a href="/colleges.html" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+          <div class="college-image">
+            <img src="/assets/img/CET-logo1.png" alt="CET">
+          </div>
+          <div class="college-content py-3">
+            <h3 class="text-lg font-bold text-gray-700">Engineering and Technology</h3>
+            <p class="text-gray-600 college-description text-sm text-justify">A center for Engineering and Industrial Technology Education aimed at producing globally competitive graduates equipped with high ethical standards of professionalism</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- recent theses -->
+  <section class="md:mx-24 mx-none py-10">
+    <div class="container mx-auto px-4 pb-12">
+      <div class="mt-4 md:mt-0">
+        <div class="text-xl flex space-x-4 border-b-4 border-navy-blue">
+          <span class="py-2 text-gray-700 font-bold" data-content="recentTheses">Recent Theses</span>
+        </div>
+      </div>
+      <div class="grid grid-flow-col grid-rows-1 gap-4 pt-4 border-b-4 border-gray-300 py-4">
+        <div class="col-span-3 row-span-2">
+          <a href="/view-thesis-abstract.html">
+            <img src="/assets/img/thumbnail.png">
+          </a>
+        </div>
+        <div class="col-span-9 row-auto text-justify">
+          <h3 class="text-md font-semibold text-gray-700">
+            <a href="/view-thesis-abstract.html">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
+          </h3>
+          <p class="text-gray-600 text-sm my-2"><em>Author(s): <img src="/assets/img/author-avatar.png" class="inline w-6 rounded-full">Gina Claveria | Year: 2023 | Course: Bachelor of Science in Information Technology</em></p>
+          <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur natus veniam maxime officiis veritatis explicabo eos modi tempore adipisci? Dignissimos ipsum, ducimus explicabo unde vitae dolorum animi quasi repellat harum eaque id dicta impedit in placeat minus. Maxime architecto fugiat iste ea possimus iure optio corporis eius non, officia doloremque repellendus praesentium voluptatem temporibus laudantium eveniet reiciendis, impedit ab facere quod dolorum eum consectetur. Eum sequi, aut ab saepe temporibus minima tempora amet eos sapiente laborum esse fugiat cum aliquam molestias fuga nesciunt quos dolorum exercitationem totam reiciendis? Incidunt vel exercitationem at voluptatibus libero cumque perferendis deserunt veniam voluptate iure magni ut eos dolor dignissimos laboriosam vero ratione, dicta provident id iusto sapiente, quisquam iste omnis nihil? Aliquid, accusamus voluptate iusto molestiae corporis doloremque qui, excepturi recusandae sed sint nihil eligendi, ullam labore veniam. Laborum debitis officia nisi delectus. Ducimus quisquam, quas repellat culpa quo nisi adipisci consequuntur perspiciatis minus. <a class="no-underline hover:underline" href="/view-thesis-abstract.html">Read More...</a></p>
+        </div>
+      </div>
+      <div class="grid grid-flow-col grid-rows-1 gap-4 pt-4 border-b-4 border-gray-300 py-4">
+        <div class="col-span-3 row-span-2">
+          <a href="/view-thesis-abstract.html">
+            <img src="/assets/img/thumbnail.png">
+          </a>
+        </div>
+        <div class="col-span-9 row-auto text-justify">
+          <h3 class="text-md font-semibold text-gray-700">
+            <a href="/view-thesis-abstract.html">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
+          </h3>
+          <p class="text-gray-600 text-sm my-2"><em>Author(s): <img src="/assets/img/author-avatar.png" class="inline w-6 rounded-full">Gina Claveria | Year: 2023 | Course: Bachelor of Science in Information Technology</em></p>
+          <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur natus veniam maxime officiis veritatis explicabo eos modi tempore adipisci? Dignissimos ipsum, ducimus explicabo unde vitae dolorum animi quasi repellat harum eaque id dicta impedit in placeat minus. Maxime architecto fugiat iste ea possimus iure optio corporis eius non, officia doloremque repellendus praesentium voluptatem temporibus laudantium eveniet reiciendis, impedit ab facere quod dolorum eum consectetur. Eum sequi, aut ab saepe temporibus minima tempora amet eos sapiente laborum esse fugiat cum aliquam molestias fuga nesciunt quos dolorum exercitationem totam reiciendis? Incidunt vel exercitationem at voluptatibus libero cumque perferendis deserunt veniam voluptate iure magni ut eos dolor dignissimos laboriosam vero ratione, dicta provident id iusto sapiente, quisquam iste omnis nihil? Aliquid, accusamus voluptate iusto molestiae corporis doloremque qui, excepturi recusandae sed sint nihil eligendi, ullam labore veniam. Laborum debitis officia nisi delectus. Ducimus quisquam, quas repellat culpa quo nisi adipisci consequuntur perspiciatis minus. <a class="no-underline hover:underline" href="/view-thesis-abstract.html">Read More...</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- recent journals -->
+    <div class="container mx-auto px-4">
+      <div class="mt-4 md:mt-0">
+        <div class="text-xl flex space-x-4 border-b-4 border-navy-blue">
+          <span class="py-2 text-gray-700 font-bold" data-content="recentTheses">Recent Journal</span>
+        </div>
+      </div>
+      <div class="grid grid-flow-col grid-rows-1 gap-4 pt-4 border-b-4 border-gray-300 py-4">
+        <div class="col-span-3 row-span-2">
+          <a href="/view-thesis-abstract.html">
+            <img src="/assets/img/thumbnail.png">
+          </a>
+        </div>
+        <div class="col-span-9 row-auto text-justify">
+          <h3 class="text-md font-semibold text-gray-700">
+            <a href="/view-thesis-abstract.html">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
+          </h3>
+          <p class="text-gray-600 text-sm my-2"><em>Author(s): <img src="/assets/img/author-avatar.png" class="inline w-6 rounded-full">Gina Claveria | Year: 2023 | Course: Bachelor of Science in Information Technology</em></p>
+          <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur natus veniam maxime officiis veritatis explicabo eos modi tempore adipisci? Dignissimos ipsum, ducimus explicabo unde vitae dolorum animi quasi repellat harum eaque id dicta impedit in placeat minus. Maxime architecto fugiat iste ea possimus iure optio corporis eius non, officia doloremque repellendus praesentium voluptatem temporibus laudantium eveniet reiciendis, impedit ab facere quod dolorum eum consectetur. Eum sequi, aut ab saepe temporibus minima tempora amet eos sapiente laborum esse fugiat cum aliquam molestias fuga nesciunt quos dolorum exercitationem totam reiciendis? Incidunt vel exercitationem at voluptatibus libero cumque perferendis deserunt veniam voluptate iure magni ut eos dolor dignissimos laboriosam vero ratione, dicta provident id iusto sapiente, quisquam iste omnis nihil? Aliquid, accusamus voluptate iusto molestiae corporis doloremque qui, excepturi recusandae sed sint nihil eligendi, ullam labore veniam. Laborum debitis officia nisi delectus. Ducimus quisquam, quas repellat culpa quo nisi adipisci consequuntur perspiciatis minus. <a class="no-underline hover:underline" href="/view-thesis-abstract.html">Read More...</a></p>
+        </div>
+      </div>
+      <div class="grid grid-flow-col grid-rows-1 gap-4 pt-4 border-b-4 border-gray-300 py-4">
+        <div class="col-span-3 row-span-2">
+          <a href="/view-thesis-abstract.html">
+            <img src="/assets/img/thumbnail.png">
+          </a>
+        </div>
+        <div class="col-span-9 row-auto text-justify">
+          <h3 class="text-md font-semibold text-gray-700">
+            <a href="/view-thesis-abstract.html">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
+          </h3>
+          <p class="text-gray-600 text-sm my-2"><em>Author(s): <img src="/assets/img/author-avatar.png" class="inline w-6 rounded-full">Gina Claveria | Year: 2023 | Course: Bachelor of Science in Information Technology</em></p>
+          <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur natus veniam maxime officiis veritatis explicabo eos modi tempore adipisci? Dignissimos ipsum, ducimus explicabo unde vitae dolorum animi quasi repellat harum eaque id dicta impedit in placeat minus. Maxime architecto fugiat iste ea possimus iure optio corporis eius non, officia doloremque repellendus praesentium voluptatem temporibus laudantium eveniet reiciendis, impedit ab facere quod dolorum eum consectetur. Eum sequi, aut ab saepe temporibus minima tempora amet eos sapiente laborum esse fugiat cum aliquam molestias fuga nesciunt quos dolorum exercitationem totam reiciendis? Incidunt vel exercitationem at voluptatibus libero cumque perferendis deserunt veniam voluptate iure magni ut eos dolor dignissimos laboriosam vero ratione, dicta provident id iusto sapiente, quisquam iste omnis nihil? Aliquid, accusamus voluptate iusto molestiae corporis doloremque qui, excepturi recusandae sed sint nihil eligendi, ullam labore veniam. Laborum debitis officia nisi delectus. Ducimus quisquam, quas repellat culpa quo nisi adipisci consequuntur perspiciatis minus. <a class="no-underline hover:underline" href="/view-thesis-abstract.html">Read More...</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
+    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+      <div class="sm:flex sm:items-center sm:justify-between">
+        <a href="#" class="flex items-center mb-4 sm:mb-0">
+          <img src="/assets/img/logo.png" class="h-8 mr-3" alt="LITAW Logo" />
+          <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">LITAW</span>
+        </a>
+        <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+          </li>
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
+          </li>
+          <li>
+            <a href="#" class="hover:underline">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
+    </div>
+  </footer>
+
+
+  <!--navigation toggle and login modal-->
+  <script>
+    function toggleLoginNavItem() {
+      var loginNavItem = document.getElementById("loginNavItem");
+      loginNavItem.classList.toggle("hidden");
+    }
+
+    function toggleLoginModal() {
+      const modal = document.getElementById('loginModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function hideLoginModal() {
+      const modal = document.getElementById('loginModal');
+      modal.classList.add('hidden');
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"  rel="stylesheet" />
+    
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: { colors: {
+                    "blue-light": "#237098",
+                    "dark-blue": "#203972"
+             }
+            }
+          }
+        }
+      </script>
+
+</head>
+
+<body class="bg-gray-100">
+<nav class="fixed top-0 z-50 w-full bg-dark-blue border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-start">
+        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-white sm:hidden">
+            <span class="sr-only">Open sidebar</span>
+            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+               <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+            </svg>
+         </button>
+        <a href="https://flowbite.com" class="flex ml-2 md:ml-16 md:mr-24">
+          <img src="/assets/img/logo.png" class="h-8 mr-3" alt="FlowBite Logo" />
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">LITAW</span>
+        </a>
+      </div>
+      <div class="flex items-center">
+          <div class="flex items-center ml-3">
+            <div>
+              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+              </button>
+            </div>
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+              <div class="px-4 py-3" role="none">
+                <p class="text-sm text-gray-900 dark:text-white" role="none">
+                  Admin
+                </p>
+                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                  admin@gmail.com
+                </p>
+              </div>
+              <ul class="py-1" role="none">
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">My Account</a>
+                </li>
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</nav>
+
+
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full bg-dark-blue border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+  <div class="h-full px-4 pb-4 overflow-y-auto">
+     <ul class="space-y-2">
+       <p class="block py-2 mt-2 px-2 text-sm text-white">Menu</p>
+        <li>
+           <a href="/cas/index.html" class="flex items-center p-2 text-white hover:text-white rounded-lg hover:bg-blue-light group">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block mr-1 mb-1">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                 </svg>
+              <span class="ml-3">Dashboard</span>
+           </a>
+        </li>
+
+        <li>
+         <a href="/cas/theses.html" class="flex items-center p-2 text-white hover:text-white rounded-lg hover:bg-blue-light group">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+           </svg>            
+            <span class="ml-3">Theses</span>
+         </a>
+      </li>
+        
+        <li>
+           <a href="/cas/journal.html" class="flex items-center p-2 text-white hover:text-white rounded-lg hover:bg-blue-light group">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block mr-1">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                 </svg>
+              <span class="flex-1 ml-3 whitespace-nowrap">Journals</span>
+             
+           </a>
+        </li>
+        <li>
+           <a href="/cas/courses.html" class="flex items-center  bg-blue-light p-2 text-white hover:text-white rounded-lg hover:bg-blue-light group">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block mr-1 mb-1">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                 </svg> 
+              <span class="flex-1 ml-3 whitespace-nowrap">Courses</span>
+           </a>
+       </li>
+   
+       <li>
+           <hr class="mt-64">
+           <a href="#" class="flex flex items-center p-2 mt-2 text-white hover:text-white rounded-lg hover:bg-blue-light group">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block mr-1 mt-1">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                 </svg> 
+              <span class="flex-1 ml-3 whitespace-nowrap">Settings</span>
+           </a>
+       </li>
+     </ul>
+  </div>
+</aside>
+
+
+<section class="bg-white md:ml-64 mt-14 p-4">
+  <div class="bg-white border rounded-md shadow-md p-6">
+    <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+              <h2 class="text-2xl text-gray-800 font-semibold">List of Courses</h2>
+    
+              <a href="#">
+                <button class="py-2 px-4 text-gray-600 text-sm font-medium rounded-md mt-4 md:mt-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-600 inline-block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Add New
+                </button>
+              </a>          
+          </div>
+    
+      <hr>
+
+      <div class="flex flex-col md:flex-row items-center justify-end text-sm mt-4">
+        <p class="inline-block text-sm text-gray-700 mr-2">College</p>
+                <div class="inline-block mx-2 mr-7 mb-1">
+                  <select class="w-full border text-gray-700 text-sm py-2 px-3 mt-1 rounded-md md:mr-8 focus:outline-none focus:ring-0 focus:border-gray-800" x-model="selectedYear">
+                      <option value="">All</option>
+                      <option value="2023">College of Arts and Science</option>
+                      <option value="2022">College of Business and Management</option>
+                      <option value="2022">College of Education</option>
+                      <option value="2022">College of Engineering and Technology</option>
+                  </select>
+              </div>
+
+              <div class="flex">
+                <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg w-44 dark:bg-gray-700">
+                </div>
+                <div class="relative w-full">
+                    <input type="search" class="block p-2 w-96 z-20 text-sm text-gray-900bg-gray-50 rounded-lg border-gray-500 border border border-gray-300 focus:ring-0 focus:border-gray-800  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search" required>
+                    <button type="submit" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-0 focus:border-gray-800-blue-800">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+                </div>
+            </div>    
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full border text-gray-700 mt-2 border-gray-300">
+            <thead class="bg-gray-200 text-sm text-gray-800">
+                <tr>
+                    <th class="px-4 py-2">No.</th>
+                    <th class="px-4 py-2">Date Created</th>
+                    <th class="px-4 py-2">Course Name</th>
+                    <th class="px-4 py-2">College</th>
+                    <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-sm">
+                <tr>
+                    <td class="border px-4 py-2">1</td>
+                    <td class="border px-4 py-2">July 23, 2023</td>
+                    <td class="border px-4 py-2">Bachelor of Science in Information Technology</td>
+                    <td class="border px-4 py-2">College of Arts and Science</td>
+                    <td class=" px-4 py-2 mt-1 flex items-center justify-center">
+                        <button class="h-7 px-4 py-1 bg-green-500 text-white rounded-full">Active</button>
+                      </td>
+                    <td class="border px-4 py-2">
+                
+          <div class="flex items-center justify-center">
+                  <button id="dropdownDelayButton" data-dropdown-toggle="dropdownDelay" data-dropdown-delay="300" data-dropdown-trigger="hover" class="text-gray-600 border focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center" type="button">Action <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg></button>
+                          <div id="dropdownDelay" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDelayButton">                         
+                              <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="openModal">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 inline-block mr-1 mb-0.5 text-blue-500">
+                                     <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                                    <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+                                  </svg>
+                                  Update</a>
+                              </li>
+                              <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="openDeleteModal" >
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 inline-block mr-1 mb-0.5 text-red-500">
+                                    <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
+                                  </svg>
+                                  Delete</a>
+                              </li>
+                          </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+      </table>
+  </div>
+
+
+
+  <div id="updateModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-black opacity-50 fixed inset-0"></div>   
+
+          <div class="bg-white rounded-md p-4 w-96 relative">         
+            <div class="flex items-center justify-end">
+              <button id="closeModal" class="text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+                </div>     
+                    <form class=" p-4 relative">
+                      <h2 class="text-lg font-semibold mb-4">Update College</h2>
+                        <select id="underline_select" class="block py-2.5 px-2 w-full text-md text-gray-700 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                          <option selected>Select</option>
+                          <option>Active</option>
+                          <option>Inactive</option>
+                        </select>
+
+                        <div class="flex items-center justify-end">
+                          <button type="submit" class="bg-blue-500 mt-4 text-white px-4 py-2 rounded-md">Save</button>
+                        </div>
+                  </form>           
+              </div>
+
+          </div>
+      </div>
+
+      <div id="deleteModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-black opacity-50 fixed inset-0"></div>
+            
+            <div class="bg-white rounded-md p-6 w-96 relative">
+                <h2 class="text-lg font-semibold mb-4">Confirm Deletion</h2>
+                <p>Are you sure you want to delete this college?</p>
+                <div class="mt-4 flex justify-end">
+                    <button id="cancelDelete" class="mr-2 text-gray-500">Cancel</button>
+                    <button id="confirmDelete" class="bg-red-500 text-white px-4 py-2 rounded-lg">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  <div class="flex flex-col md:flex-row items-center justify-between mt-4">
+    <ul class="flex justify-center md:justify-start text-sm mt-2 md:mt-0">
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+        </li>
+        <li>
+          <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+        </li>
+      </ul>
+    
+      <div class="flex items-center mt-4 md:mt-0">
+        <span class="text-sm text-gray-700 mr-2">Rows per page:</span>
+          <select class="border py-1 px-2 text-sm rounded-md  focus:outline-none focus:ring-0 focus:border-gray-800">
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>All</option>
+          </select>
+    </div>
+   </section>
+    
+
+
+           <!--Update course-->
+           <script>
+            const openModalButton = document.getElementById('openModal');
+            const closeModalButton = document.getElementById('closeModal');
+            const updateModal = document.getElementById('updateModal');
+        
+            openModalButton.addEventListener('click', () => {
+                updateModal.classList.remove('hidden');
+            });
+        
+            closeModalButton.addEventListener('click', () => {
+                updateModal.classList.add('hidden');
+            });
+        </script>
+
+        <!--Delete course-->
+        <script>
+            const openDeleteModalButton = document.getElementById('openDeleteModal');
+            const closeDeleteModalButton = document.getElementById('cancelDelete');
+            const confirmDeleteButton = document.getElementById('confirmDelete');
+            const deleteModal = document.getElementById('deleteModal');
+
+            openDeleteModalButton.addEventListener('click', () => {
+            deleteModal.classList.remove('hidden');
+            });
+
+            closeDeleteModalButton.addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            });
+
+            confirmDeleteButton.addEventListener('click', () => {
+              // Perform the actual deletion here
+                           
+            deleteModal.classList.add('hidden');
+            });
+        </script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"  rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: { colors: {
+                    "navy-blue": "#084D8B",
+             }
+            }
+          }
+        }
+      </script>
+
+</head>
+<body>
+  <nav class="navbar-top relative bg-gradient-to-tr py-12 bg-center">
+    <img src="../assets/img/nav-top.jpg" alt="Navbar Image" class="absolute inset-0 w-full h-full object-cover opacity-50">
+    <div class="absolute inset-0 bg-white opacity-30"></div>
+    <div class="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-white to-transparent opacity-500"></div>
+    <div class="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-white to-transparent opacity-200"></div>
+</nav>
+
+<nav class="bg-navy-blue px-14 shadow-md">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 transition duration-700 ease-in-out">
+      <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white md:hidden" aria-controls="navbar-dropdown" aria-expanded="false" onclick="toggleLoginNavItem()">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>      
+      <div class="hidden w-full md:flex md:w-auto md:items-center md:justify-center" id="navbar-dropdown">
+          <ul class="flex flex-col md:p-0 mt-4 rounded-lg bg-navy-blue md:flex-row md:space-x-12 md:mt-0 md:border-0 md:bg-navy-blue dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 justify-center"> <!-- Add justify-center class here -->
+              <li>
+                  <a href="/home.html" class="block py-2 pl-3 pr-4 text-white md:p-0" aria-current="page">Home</a>
+              </li>
+              <li>
+                  <a href="/about.html" class="block py-2 pl-3 pr-4 text-white md:p-0">About</a>
+              </li>
+              <li>
+                  <a href="/Theses.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Theses</a>
+              </li>
+              <li>
+                  <a href="/journal.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Journals</a>
+              </li>
+              <li>
+                  <a href="/statistics.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Statistics</a>
+              </li>
+              <li>
+                  <a href="/submit.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Submit Manuscript</a>
+              </li> 
+          </ul>               
+      </div> 
+
+      <div class="flex items-center ml-3">
+        <div>
+          <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+            <span class="sr-only">Open user menu</span>
+            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+          </button>
+        </div>
+        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+          <div class="px-4 py-3" role="none">
+            <p class="text-sm text-gray-900 dark:text-white" role="none">Claveria, Gina</p>
+            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+              gclaveria.pbox@parsu.edu.ph
+            </p>
+          </div>
+          <ul class="py-1" role="none">
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">My Account</a>
+            </li>
+            <li>
+              <a href="/home.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+  </div>
+</nav>
+
+
+<div id="loginModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+  <div class="relative w-full max-w-md max-h-full">
+  
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onclick="hideLoginModal()">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      
+      <form class="bg-white border rounded-md shadow-md p-8" id="loginForm">
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
+          <div class="relative z-0 w-full mb-6 group">
+            <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+          </div>
+
+          <div class="relative z-0 w-full mb-6 group">
+              <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+          </div>
+
+          <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center">
+                <input id="remember" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+                  <label for="remember" class="ml-2 text-sm text-gray-900 dark:text-gray-300">Remember me</label>
+              </div>
+
+              <div class="text-sm">
+                <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Forgot password?</a>
+              </div>
+          </div>
+
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+            <div class="flex items-center justify-center mt-2">
+              <p class="text-sm text-gray-600 dark:text-gray-400">Not Registered? <a href="/signup.html" class="text-blue-600 dark:text-blue-500 hover:underline">Create Account</a></p>
+            </div> 
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <nav class="breadcrumbs mb-2 ml-24 mt-4 text-xs">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+      <li class="inline-flex items-center">
+        <a href="#" class="inline-flex items-center text-sm text-gray-700">
+          <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+          </svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 mx-1 text-gray-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>          
+          <a href="#" class="ml-1 text-sm text-gray-700 md:ml-2">#</a>
+        </div>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 mx-1 text-gray-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg> 
+          <span class="ml-1 text-sm text-gray-500 md:ml-2 dark:text-gray-400">#</span>
+        </div>
+      </li>
+    </ol>
+  </nav>
+
+
+
+
+
+  <!--navigation toggle and login modal-->
+  <script>
+    function toggleLoginNavItem() {
+        var loginNavItem = document.getElementById("loginNavItem");
+        loginNavItem.classList.toggle("hidden");
+    }
+  
+    function toggleLoginModal() {
+    const modal = document.getElementById('loginModal');
+    modal.classList.toggle('hidden');
+  }
+  
+    function hideLoginModal() {
+    const modal = document.getElementById('loginModal');
+    modal.classList.add('hidden');
+  }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+</body>
+</html>

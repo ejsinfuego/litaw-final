@@ -19,7 +19,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 |
 */
 
-Route::get('/', [ThesesController::class, 'index'])->name('dashboard');
+Route::get('/', [ThesesController::class, 'index', 'navBar'])->name('dashboard');
 Route::get('search/{title}', [ThesesController::class, 'search']);
 
 Route::middleware([
@@ -31,8 +31,18 @@ Route::middleware([
 });
 
 Route::resource('theses', ThesesController::class)
-    ->only(['store', 'edit', 'destroy',])
+    ->only(['store', 'destroy'])
     ->middleware(['auth', 'verified']);
+
+//update
+Route::patch('theses/{theses}', [ThesesController::class, 'update'])->middleware(['auth', 'verified'])->name('theses.update');
+
+Route::get('theses/{theses}/edit', [ThesesController::class, 'edit'])->middleware(['auth', 'verified'])->name('theses.edit');
+
+//comment and like
+Route::patch('theses/{theses}/comment', [ThesesController::class, 'comment'])->middleware(['auth', 'verified'])->name('theses.comment');
+Route::get('theses/{theses}/like', [ThesesController::class, 'like'])->middleware(['auth', 'verified'])->name('theses.like');
+
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function() {
     Route::get('/', [IndexController::class, 'index'])->name('index');
@@ -51,6 +61,7 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
 Route::get('year/{year}', [ThesesController::class, 'years']);
+Route::get('course/{course}', [ThesesController::class, 'courses']);
 Route::get('view/{theses}', [ThesesController::class, 'singleThesis'])->name('view-thesis');
 Route::get('categories/{key}', [ThesesController::class, 'categories'])->name('categories');
-    
+Route::get('/data', [ThesesController::class, 'data'])->name('visualize');

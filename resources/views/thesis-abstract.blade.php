@@ -1,60 +1,105 @@
 <x-nav-bar></x-nav-bar>
             <div class="container mx-auto mt-2">
               <div class="md:flex mx-4 md:mx-10">
-                <div class="md:w-3/4 bg-white rounded-lg p-6 mr-4 mb-4 md:mb-0 mt-10">
+                <div class="md:w-3/4 bg-white rounded-lg py-2 mr-4 mb-4 md:mb-0 mt-10">
                     <h1 class="text-2xl font-semibold text-gray-700">{{ $theses->title }} </h1>
 
                     <hr class="my-7 border-gray-400">
-                    
+                    @hasrole('contentModerator')
+                      <p class="py-1">Status
+                        @if($theses->approved == 0)
+                        <span class="text-red-500">Pending</span>
+                        @endif 
+                        <span class="text-green-500">Approved</span> 
+                        
+                        </p>
+                    @endhasrole
                     <p class="text-gray-600 text-md mt-0 mb-4">Author(s): @foreach ($theses->authors as $author )
                     <strong>{{$author->author}}</strong> |    
                     @endforeach</p>
-                    <p class="text-gray-600 text-md mb-4">Date Upload: {{date('M d, Y',strtotime($theses->created_at))}}</p>
+                    <p class="text-gray-400 text-sm mb-4">Year Published: {{$theses->year->year}}</p>
+                    <p class="text-gray-400 text-sm mb-4">Date Upload: {{date('M d, Y',strtotime($theses->created_at))}}</p>
                     <h2 class="text-lg font-semibold text-gray-600 mb-1">Abstract</h2>
                     <p class="text-gray-600 text-md p-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$theses->abstract}}</p>
+                    <p class="text-gray-600 text-md italic p-2">Keywords: {{$theses->metakeys}}</p>
+                    <div class="border">
+                      <img data-pdf-thumbnail-file="/storage/{{$theses->filename}}">
+                    </div>
                       <div class="flex items-center justify-end mt-8">
-                        <button class="bg-blue-600 font-semibold text-white px-4 py-2 rounded mr-2"><a href="/storage/{{$theses->filename}}" target="_blank" class="text-white-700 mr-4">Full Text PDF</a></button>
-
-                        @auth
-                        
-                        <button class="bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white px-4 py-2 border border-red-500 hover:border-transparent rounded" onclick="likeThesis()">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2">
-                            <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
-                          </svg> 
-                          Like
-                        @endauth
+                        @guest
+                        <button class="bg-blue-600 font-semibold text-white px-4 py-2 rounded mr-2"><a target="_blank" onclick="toggleLoginModal()" class="text-white-700 mr-4">Full Text PDF</a></button>
+                        @else
+                          <button class="bg-blue-600 font-semibold text-white px-4 py-2 rounded mr-2"><a href="/storage/{{$theses->filename}}" target="_blank" class="text-white-700 mr-4">Full Text PDF</a></button>
+                        @endguest
+                        @hasrole('contentModerator')
+                        <button class="bg-blue-600 font-semibold text-white px-4 py-2 rounded mr-2"><a href="{{route('theses.edit', $theses->id)}}"class="text-white-700">Edit</a></button>
+                        @endhasrole
+                        @guest
+                            <button class="bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white px-4 py-2 border border-red-500 hover:border-transparent rounded" onclick="toggleLoginModal()">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2">
+                                <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+                              </svg> 
+                              Like
+                            </button>
+                          @else
+                          <a href="{{ route('theses.like', $theses->id) }}" class="bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white px-4 py-2 border border-red-500 hover:border-transparent rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2">
+                              <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+                            </svg>
+                            @foreach ($likes as $like)
+                              @if($like->theses_id != $theses->id and $like->user_id != Auth::user()->id)
+                              Like
+                              @else
+                              Unlike
+                              @endif
+                            @endforeach
+                           
+                          </a>
+                        @endguest
                       </div>
-
+                     
 
                     <hr class="my-4 border-gray-400">
-                    
                     <div class="mt-6">
                       <h2 class="text-xl font-semibold text-gray-600">Comments</h2>
-                      
                       <div class="mt-4">
-                        <div class="border p-4 rounded mb-2 text-gray-600">
-                          <strong>User1:</strong>
-                          <p class="text-gray-600 text-sm">This thesis is great!</p>
-                        </div>
-                        <div class="border p-4 rounded mb-2 text-gray-600">
-                          <strong>User2:</strong>
-                          <p class="text-gray-600 text-sm">Interesting findings in this research.</p>
-                        </div>
+                      @if($comments->count() > 0)
+                      @foreach ($comments as $comment)
+                      <div class="border p-4 rounded mb-2 text-gray-600">
+                          <strong>{{$comment->user->first_name}} {{$comment->user->last_name}}</strong>
+                          <p class="text-gray-600 text-sm">{{$comment->comment}}</p>
+                      </div>
+                      @endforeach
+                      @else
+                      <div class="border p-4 rounded mb-2 text-gray-600">
+                          <strong>No comments yet.</strong>
+                      </div>
+                      @endif
+                    
                       </div>
 
                       <div class="mt-6">
                         <h3 class="text-lg font-semibold text-md text-gray-600">Leave a Comment</h3>
-                        <form class="mt-4" id="commentForm">
+                        <form method="POST" class="mt-4" id="commentForm" action="{{ route('theses.comment', $theses->id) }}">
+                          @csrf
+                          @method('PATCH')
                           <div class="mb-4">
                             <label for="comment" class="block text-md text-gray-600 font-semibold">Comment:</label>
+                            <input type="hidden" name="thesis_id" value="{{$theses->id}}">
                             <div class="relative">
-                              <textarea id="comment" rows="4" class="textarea input-bordered border focus:ring-0 focus:border-gray-600 border-gray-400 px-4 py-2 pr-12 mt-2 w-full" placeholder="Type your comment here..."></textarea>
-
-                              <button type="button" onclick="submitComment()" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
+                              <textarea id="comment" name="comment" rows="4" class="textarea input-bordered border focus:ring-0 focus:border-gray-600 border-gray-400 px-4 py-2 pr-12 mt-2 w-full" placeholder="Type your comment here..."></textarea>
+                              @auth
+                                 <button type="submit" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                                 </svg>
                               </button>
+                              @endauth
+                              <a href="#" onclick="toggleLoginModal()" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                                </svg>
+                              </a>
                             </div>
                           </div>
                         </form>
@@ -67,16 +112,13 @@
                   <h2 class="text-lg font-semibold text-gray-600">Paper Statistics</h2>
                   <div class="mt-4 grid grid-cols-3 gap-4">
                 <div>
-                  <p class="text-gray-600 text-md">Views</p>
+                  <p class="text-gray-600 text-md"><i class="fa fa-eye" aria-hidden="true"></i></p>
                   <p class="text-gray-600 text-md">{{$views}}</p>
                     </div>
+
                 <div>
-                  <p class="text-gray-600 text-md">Citations</p>
-                  <p class="text-gray-600 text-md">50</p>
-                    </div>
-                <div>
-                <p class="text-gray-600 text-md">Likes</p>
-                <p class="text-gray-600 text-md">30</p>
+                <p class="text-gray-600 text-md"><i class="fa fa-heart" aria-hidden="true"></i></p>
+                <p class="text-gray-600 text-md">{{$likes->count()}}</p>
                     </div>
             </div>
           
@@ -90,7 +132,7 @@
             
                   <div class="mt-4">
                     <h2 class="text-lg font-semibold text-gray-600">Course</h2>
-                    <p class="text-gray-600 text-md">Bachelor {{Str::title($theses->course->course)}}</p>
+                    <p class="text-gray-600 text-md">{{$theses->course->course}}</p>
                   </div>
             
                   <div class="mt-4">
@@ -106,18 +148,16 @@
 
                     <div class="mt-4">
                       <h2 class="text-lg font-semibold text-gray-600">Recent Submissions</h2>
-                      <ul class="space-y-4 mt-2">
-                        <a href="#" class="text-gray-600 text-md hover:underline">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
-                      </ul>
-                      <ul class="space-y-4 mt-2">
-                        <a href="#" class="text-gray-600 text-md hover:underline">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
-                      </ul>
-                      <ul class="space-y-4 mt-2">
-                        <a href="#" class="text-gray-600 text-md hover:underline">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
-                      </ul>
-                      <ul class="space-y-4 mt-2">
-                        <a href="#" class="text-gray-600 text-md hover:underline">Promoting Gender Equality in the Workplace: An Examination of Diversity and Inclusion Initiatives in Corporate Settings</a>
-                      </ul>
+                      @foreach ($recent_theses as $latest)
+                      
+                        @if ($latest->id != $theses->id)
+                        <ul class="space-y-4 mt-2">
+                          <a href="\view/{{$latest->id}}" class="text-gray-600 text-md hover:underline font-semibold">{{Str::title($latest->title)}}</a>
+                        </ul>
+                        @endif
+                        
+                    
+                      @endforeach
                     </div>
                     
                

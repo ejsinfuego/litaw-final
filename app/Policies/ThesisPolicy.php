@@ -6,16 +6,18 @@ use Illuminate\Auth\Access\Response;
 use App\Models\Theses;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class ThesisPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
+
     public function viewAny(User $user): bool
     {
         //
-        return true;
+       return true;
     }
 
     /**
@@ -24,6 +26,7 @@ class ThesisPolicy
     public function view(User $user, Theses $theses): bool
     {
         //
+        return true;
     }
 
     /**
@@ -32,6 +35,8 @@ class ThesisPolicy
     public function create(User $user): bool
     {
         //
+        $user = Auth::user();
+        return $user->hasAnyRole(['contentModerator', 'registeredUser']);
     }
 
     /**
@@ -40,6 +45,12 @@ class ThesisPolicy
     public function update(User $user, Theses $theses): Response
     {
         //
+        $user = Auth::user();
+        if($user->hasAnyRole(['contentModerator', 'registeredUser']) or $user->id == $theses->user_id) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
@@ -49,6 +60,13 @@ class ThesisPolicy
     public function delete(User $user, Theses $theses): bool
     {
         //
+        $user = Auth::user();
+        if($user->hasAnyRole(['contentModerator', 'registeredUser']) or $user->id == $theses->user_id) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public function approve(User $user, Theses $theses): bool

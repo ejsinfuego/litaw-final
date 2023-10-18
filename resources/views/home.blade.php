@@ -1,20 +1,51 @@
-<x-nav-bar></x-nav-bar>
-<div id="default-carousel" class="relative w-full" data-carousel="slide">
+@include('components.nav-bar', ['courses' => 'courses'])
+<style>
+  .speech-bubble {
+  background: #ddd;
+  color: #333;
+	font-size: 8px;
+  margin-bottom: 1em;
+	padding: 0 1em;
+	position: relative;
+	text-align: left;
+	vertical-align: top;
+	min-width: 7em;
+  z-index: 5;
+}
+
+.speech-bubble.rounded {
+	border-radius: .4em;
+}
+</style>
+<div id="default-carousel" class="relative w-full h-96" data-carousel="slide">
   <!-- Carousel wrapper -->
   <div class="relative h-56 overflow-hidden  md:h-96">
     <!-- Item 1 -->
-    <div class="hidden duration-100 ease-in-out" data-carousel-item>
-      <img src="/assets/img/bee.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cas.jpg') }});">
+      <img src="{{ asset('/img/')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
     </div>
     <!-- Item 2 -->
-    <div class="hidden duration-100 ease-in-out" data-carousel-item>
-      <img src="/assets/img/CAP2-PR1.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cbm1.jpg') }});">
+      {{-- <img class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
     </div>
+
+    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/coed.jpg') }});">
+      {{-- <img class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+    </div>
+
+    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cet.jpg') }});">
+      {{-- <img class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+    </div>
+
   </div>
+
   <!-- Slider indicators -->
   <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
     <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
     <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="2"></button>
+    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="3"></button>
+    
   </div>
   <!-- Slider controls -->
   <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
@@ -34,9 +65,36 @@
     </span>
   </button>
 </div>
+  <div class="container mx-auto md:px-20 px-0">
+    <div class="flex flex-col justify-center md:flex-row md:items-center mt-12">
+      <div class="relative">
+        <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
+          <option class="focus:bg-gray-50 placeholder-gray-500" selected>All colleges</option>
+          <option class="" value="US">Arts and Science</option>
+          <option class="" value="CA">Business and Management</option>
+          <option class="" value="FR">Education</option>
+          <option class="" value="DE">Engineering and Technology</option>
+        </select>
+      </div>
+      
+      <div class="relative w-full mt-3 md:mt-0 md:w-auto">
+        <form method="GET" action="search/{title}">
+        <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
+        <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        </form>
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <span class="sr-only">Search</span>
+        </button>
+      </div>
+    </div> 
+    
+</div>
 
 
-  <main class="relative max-w-screen overflow-x-hidden" style="height: 480px;">
+
+  {{-- <main class="relative max-w-screen overflow-x-hidden" style="height: 480px;">
     <div class="bg-cover bg-no-repeat bg-center md:h-full h-full" style="background-image: url({{ asset('/img/bg.jpg') }});">
         <div class="absolute inset-0 bg-black opacity-60"></div>
         <div class="container mx-auto md:h-96 flex flex-col items-center justify-center relative pt-14 md:pt-12 z-10">
@@ -66,15 +124,18 @@
               </div>
             </div>             
         </div>
-    </div>
+    </div> --}}
 </main>
+
 <section class="py-8">
+
   <div class="container mx-auto px-4 md:px-0">
     <h2 class="text-4xl font-bold mb-4 text-center text-gray-700">COLLEGES</h2>
+    
     <p class="text-center text-gray-600">Select colleges to browse thesis and academic works</p>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 md:px-20 px-0">
-      <a href="categories/{{$cas}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+      <a href="categories/{{$cas->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content pt-8 flex flex-col items-center">
           <div class="college-image w-44 justify-center">
             <img src="{{ asset('/img/CAS-logo.png') }}" alt="CAS">
@@ -85,7 +146,7 @@
       </a>
       
 
-      <a href="categories/{{$cbm}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+      <a href="categories/{{$cbm->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content py-3 flex flex-col items-center">
           <div class="college-image w-52 justify-center">
           <img src="{{ asset('/img/cbm_logo_new.png')}}" alt="CBM">
@@ -98,7 +159,7 @@
       </a>
       
 
-      <a href="categories/{{$coed}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300 ">
+      <a href="categories/{{$coed->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300 ">
         <div class="college-content py-1 flex flex-col items-center">
           <div class="college-image w-52 justify-center">
           <img src="{{ asset('/img/COED-logo.png') }}" alt="COED">
@@ -110,7 +171,7 @@
         </div>
       </a>
       
-      <a href="categories/{{$cet}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+      <a href="categories/{{$cet->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content py-2 flex flex-col items-center">
           <div class="college-image w-52 justify-center">
           <img src="{{ asset('/img/CET-logo.png')}}"alt="CET">
@@ -125,6 +186,130 @@
     </div>
   </div>
 </section>
+<div hidden>
+  <p>{{count($theses)}}</p>
+  <p id="coed">
+  {{$coed->college}}
+  </p>
+  <p id="cas">
+    {{$cas->college}}
+  </p>
+  <p id="cbm">
+    {{$cbm->college}}
+  </p>
+  <p id="cet">
+    {{$cet->college}}
+  </p>
+
+  <p id="casCount">{{$cas_theses->count()}}</p>
+  <p id="cbmCount">{{$cbm_theses->count()}}</p>
+  <p id="coedCount">{{$coed_theses->count()}}</p>
+  <p id="cetCount">{{$cet_theses->count()}}</p>
+</div>
+
+<div class="container w-1/4 mx-auto px-4 md:px-0">
+  <canvas id="myChart"></canvas>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    //show pop when hover
+    
+
+
+  function popup(){
+    let popup = document.getElementByClass('myPopup');
+    popup.removeAttribute('hidden');
+  }
+
+  function hidePopup(){
+    let popup = document.classList('myPopup');
+    popup.setAttribute('hidden', true);
+  }
+
+  
+  const ctx = document.getElementById('myChart');
+  let cas = document.getElementById('cas').textContent;
+  let coed = document.getElementById('coed').textContent;
+  let cet = document.getElementById('cet').textContent;
+  let cbm  = document.getElementById('cbm').textContent;
+
+  let casCount = document.getElementById('casCount').textContent;
+  let cbmCount = document.getElementById('cbmCount').textContent;
+  let cetCount = document.getElementById('cetCount').textContent;
+  let coedCount = document.getElementById('coedCount').textContent;
+  
+
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: [cas, cbm, coed, cet], // Our labels
+      datasets: [{
+        label: 'Number of Theses We Have',
+        data: [casCount, cbmCount, coedCount, cetCount],
+        backgroundColor: [
+          'rgb(255, 99, 100)',
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+          ],
+          hoverOffset: 4
+      }]
+    },
+  });
+</script>
+
+  <div class="container mx-auto mx- px-4">
+    <div class="grid grid-cols md:grid-cols-1 gap-6">
+      <div class="mt-4 md:mt-0">
+
+        <div class="text-xl flex space-x-4 border-b-4 border-navy-blue">
+          <span class="py-2 text-gray-700 font-bold" data-content="recentTheses">Most Viewed Theses</span>
+        </div>
+       
+        <div class="bg-white rounded-md flex flex-column z-10">
+          @foreach ($highest_views as $views)
+          <div class="my-2 py-3 border-b border-gray-300 flex flex-column">
+          
+            @php
+              $thesis = App\Models\Theses::where('id', $views->theses_id)->get()->first();
+              $view = DB::table('viewed_theses')->where('theses_id', $views->theses_id)->get()->count();
+            @endphp
+            <div class="flex justify-center">
+            <div onmouseover="popup()" onmouseout="hidePopup()" class="px-2">
+            <img data-pdf-thumbnail-file="/storage/{{$thesis->filename}}" data-pdf-thumbnail-height="300" class="shadow-lg">
+            </div>
+            <div>
+            <h3 class="text-md font-semibold text-gray-700">
+              <a href='view/{{$thesis->id}}'>{{Str::title($thesis->title)}}</a>  
+            </h3>
+            <p class="text-gray-600 text-sm mt-1">Views: {{$view}}</p>
+            <p class="text-gray-600 text-sm mt-1"><em>Author(s): 
+                @foreach ($thesis->authors as $author )
+                {{$author->author}}
+                  
+                @endforeach</p>
+                <p class="text-gray-600 text-sm mt-1">Year: {{$thesis->year->year}} </p>  
+                <p class="text-gray-600 text-sm mt-1">
+              Course: {{Str::title($thesis->course->course)}}</em></p>                
+              <p class="text-gray-600 text-sm mt-1"> College: {{$thesis->college->college}} </p> 
+                </div>
+          </div>
+            
+          </div>
+      
+          @endforeach
+          
+        </div>   
+      
+      </div>
+    </div>
+  </div>
+        
 
 <section class="md:mx-24 mx:none py-10">
   <div class="container mx-auto mx- px-4">
@@ -135,27 +320,51 @@
           <span class="py-2 text-gray-700 font-bold" data-content="recentTheses">Recent Theses</span>
         </div>
 
+        
+
       
-      @foreach ($theses as $thesis)
-        <div class="bg-white rounded-md">
-          <div class="my-2 py-3 border-b border-gray-300">
+      @foreach ($recent_theses as $thesis)
+      {{-- pop over when hover --}}
+     <div class="absolute">
+            <div id="myPopup" class="myPopup speech-bubble rounded z-2000 w-1/4" hidden>
+                <p>{{$thesis->abstract}}</p>
+            </div>
+            </div>
+        <div class="bg-white rounded-md flex flex-column z-10">
+          <div class="my-2 py-3 border-b border-gray-300 flex flex-column">
+            
+          <div class="flex justify-center">
+            <div onmouseover="popup()" onmouseout="hidePopup()" class="px-2">
+            <img data-pdf-thumbnail-file="/storage/{{$thesis->filename}}" data-pdf-thumbnail-height="300" class="shadow-lg">
+            </div>
+            
+            <div>
             <h3 class="text-md font-semibold text-gray-700">
-              <a href='view/{{$thesis->id}}'>{{$thesis->title}}</a>
+              <a href='view/{{$thesis->id}}'>{{Str::title($thesis->title)}}</a>  
             </h3>
             <p class="text-gray-600 text-sm mt-1"><em>Author(s): 
-              @foreach ($thesis->authors as $author )
-              {{$author->author}}
-                
-              @endforeach| Year: {{$thesis->year->year}} | Course: Bachelor {{Str::title($thesis->course->course)}}</em></p>
+                @foreach ($thesis->authors as $author )
+                {{$author->author}}
+                  
+                @endforeach</p>
+                <p class="text-gray-600 text-sm mt-1">Year: {{$thesis->year->year}} </p>  
+                <p class="text-gray-600 text-sm mt-1">
+              Course: {{Str::title($thesis->course->course)}}</em></p>                
+              <p class="text-gray-600 text-sm mt-1"> College: {{$thesis->college->college}} </p> 
+                </div>
           </div>
-      @endforeach
-      </div>   
+            
+          </div>
+        
 
+      @endforeach
+        </div>   
+      
     </div>
   </div>
 </div>
 
-<div class="container mx-auto px-4 mt-8">
+{{-- <div class="container mx-auto px-4 mt-8">
   <div class="grid grid-cols md:grid-cols-1 gap-6">
     <div class="mt-4 md:mt-0">
 
@@ -180,11 +389,9 @@
         
     </div>   
   </div>
-</div>
+</div> --}}
 </div>
 </section>
-
-
 
 
 

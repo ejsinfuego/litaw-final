@@ -12,7 +12,19 @@ class IndexController extends Controller
     //
     public function index(User $user)
     {
-        return $user->hasRole('admin') ? view('admin.index') : view('moderator.index');
+       if (auth()->user()->hasRole('admin')) {
+            return view('admin.index', [
+                'users' => $user::all(),
+            ]);
+        } elseif (auth()->user()->hasRole('contentModerator')) {
+            return view('moderator.index', [
+                'users' => $user::all(),
+            ]);
+        } else {
+            return view('home', [
+                'users' => $user::all(),
+            ]);
+        }
         
     }
 }

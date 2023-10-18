@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Theses;
 use App\Models\Moderator;
+use App\Models\Interactions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,18 @@ class ModeratorController extends Controller
     public function index(User $user, Theses $theses)
     {
         //
+        $college = Auth::user()->college_id;
+        $theses = $theses::with('authors')->latest()->get()->where('college_id', $college);
+        if($theses->isEmpty()) {
+            return view('moderator.index', [
+                'theses' => $theses,
+                'message' => 'No theses to approve',
+            ]);
+            
+        }
         return view('moderator.index', [
-            'theses' => $theses::with('authors')->latest()->get(),
-            ]);        
+            'theses' => $theses,
+        ]);
     }
 
     /**
@@ -55,6 +65,7 @@ class ModeratorController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -62,6 +73,7 @@ class ModeratorController extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.

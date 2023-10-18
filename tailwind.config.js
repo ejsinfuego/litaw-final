@@ -20,7 +20,8 @@ export default {
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [forms, typography, require("tw-elements/dist/plugin.cjs"), require('daisyui')],
+
 };
 
 module.exports = {
@@ -36,5 +37,5 @@ module.exports = {
     theme: {
         extend: {},
     },
-    plugins: [require('daisyui')],
+    plugins: [require('daisyui'), require("tw-elements/dist/plugin.cjs")],
 };

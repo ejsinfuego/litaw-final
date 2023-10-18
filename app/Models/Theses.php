@@ -38,7 +38,6 @@ class Theses extends Model
         'authors[]',
         'approved',
         'interactions_id',
-       
     ];
 
     public function user(): BelongsTo {

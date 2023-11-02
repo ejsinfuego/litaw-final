@@ -100,7 +100,7 @@
       <input type="checkbox" id="accept-terms" name="accept-terms" class="form-checkbox h-4 w-4 text-blue-500" required>
       <span class="ml-2 text-gray-500 dark:text-gray-400">
         I have read, understood, and hereby accept the 
-        <a href="link_to_terms_and_conditions" class="text-blue-500 hover:underline">
+        <a onclick="showTerms()" href="#" class="text-blue-500 hover:underline">
           Litaw Terms and Conditions
         </a>
         on behalf of myself and every author of this manuscript

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RolesController extends Controller
 {
@@ -37,6 +38,18 @@ class RolesController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function ban(User $user)
+    {
+        $user->removeRole('registeredUser');
+        return redirect(route('moderator.users'));
+    }
+
+    public function unban(User $user)
+    {
+        $user->assignRole('registeredUser');
+        return redirect(route('moderator.users'));
     }
 
     /**

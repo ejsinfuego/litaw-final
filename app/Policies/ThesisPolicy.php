@@ -36,7 +36,7 @@ class ThesisPolicy
     {
         //
         $user = Auth::user();
-        return $user->hasAnyRole(['contentModerator', 'registeredUser']);
+        return $user->hasAnyRole(['contentModerator', 'registeredUser', 'admin']);
     }
 
     /**
@@ -46,7 +46,7 @@ class ThesisPolicy
     {
         //
         $user = Auth::user();
-        if($user->hasAnyRole(['contentModerator', 'registeredUser']) or $user->id == $theses->user_id) {
+        if($user->hasAnyRole(['contentModerator', 'registeredUser', 'admin']) or $user->id == $theses->user_id) {
             return true;
         } else {
             return false;
@@ -61,7 +61,7 @@ class ThesisPolicy
     {
         //
         $user = Auth::user();
-        if($user->hasAnyRole(['contentModerator', 'registeredUser']) or $user->id == $theses->user_id) {
+        if($user->hasAnyRole(['contentModerator', 'registeredUser', 'admin']) or $user->id == $theses->user_id) {
             return true;
         } else {
             return false;
@@ -73,7 +73,7 @@ class ThesisPolicy
     {
         //
         $user = Auth::user();
-       return $user->hasRole('contentModerator');
+       return $user->hasRole('contentModerator', 'admin');
 
     }
 

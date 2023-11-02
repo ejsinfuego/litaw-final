@@ -16,7 +16,7 @@ class IndexController extends Controller
             return view('admin.index', [
                 'users' => $user::all(),
             ]);
-        } elseif (auth()->user()->hasRole('contentModerator')) {
+        } elseif (auth()->user()->hasAnyRole('contentModerator', 'admin')) {
             return view('moderator.index', [
                 'users' => $user::all(),
             ]);

@@ -9,9 +9,9 @@
                       <p class="py-1">Status
                         @if($theses->approved == 0)
                         <span class="text-red-500">Pending</span>
-                        @endif 
+                        @else
                         <span class="text-green-500">Approved</span> 
-                        
+                        @endif
                         </p>
                     @endhasrole
                     <p class="text-gray-600 text-md mt-0 mb-4">Author(s): @foreach ($theses->authors as $author )
@@ -20,7 +20,7 @@
                     <p class="text-gray-400 text-sm mb-4">Year Published: {{$theses->year->year}}</p>
                     <p class="text-gray-400 text-sm mb-4">Date Upload: {{date('M d, Y',strtotime($theses->created_at))}}</p>
                     <h2 class="text-lg font-semibold text-gray-600 mb-1">Abstract</h2>
-                    <p class="text-gray-600 text-md p-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$theses->abstract}}</p>
+                    <p class="text-gray-600 text-md p-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$theses->abstract}}</p>
                     <p class="text-gray-600 text-md italic p-2">Keywords: {{$theses->metakeys}}</p>
                     <div class="border">
                       <img data-pdf-thumbnail-file="/storage/{{$theses->filename}}">
@@ -77,34 +77,45 @@
                       @endif
                     
                       </div>
-
+                      
                       <div class="mt-6">
                         <h3 class="text-lg font-semibold text-md text-gray-600">Leave a Comment</h3>
                         <form method="POST" class="mt-4" id="commentForm" action="{{ route('theses.comment', $theses->id) }}">
                           @csrf
                           @method('PATCH')
-                          <div class="mb-4">
+                          <div class="mb-4"> 
+                            @hasrole('registeredUser')
                             <label for="comment" class="block text-md text-gray-600 font-semibold">Comment:</label>
                             <input type="hidden" name="thesis_id" value="{{$theses->id}}">
+                           
                             <div class="relative">
                               <textarea id="comment" name="comment" rows="4" class="textarea input-bordered border focus:ring-0 focus:border-gray-600 border-gray-400 px-4 py-2 pr-12 mt-2 w-full" placeholder="Type your comment here..."></textarea>
+                              
                               @auth
                                  <button type="submit" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                                 </svg>
                               </button>
-                              @endauth
+                              @endauth 
+                              
                               <a href="#" onclick="toggleLoginModal()" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                                 </svg>
                               </a>
                             </div>
+                            @else
+                            <div class="div">
+                              <div class="p">
+                                You are not allowed to comment
+                              </div>
+                            </div>
+                            @endhasrole
                           </div>
                         </form>
                       </div>
-                      
+                     
                     </div>
                 </div>
   
@@ -132,7 +143,7 @@
             
                   <div class="mt-4">
                     <h2 class="text-lg font-semibold text-gray-600">Course</h2>
-                    <p class="text-gray-600 text-md">{{$theses->course->course}}</p>
+                    <a href="{{ route('course', $theses->course_id) }}" class="text-gray-600 text-md">{{$theses->course->course}}</a>
                   </div>
             
                   <div class="mt-4">

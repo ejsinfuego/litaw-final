@@ -118,8 +118,6 @@
       @endforeach
     </ul>
 
-
-    <h2 class="text-lg font-semibold text-gray-600 mt-4 mb-2">Author</h2>
     
   </div>
 </div>

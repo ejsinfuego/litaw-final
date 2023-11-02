@@ -68,17 +68,17 @@
   <div class="container mx-auto md:px-20 px-0">
     <div class="flex flex-col justify-center md:flex-row md:items-center mt-12">
       <div class="relative">
-        <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
+        <form method="GET" action="search/{title}">
+        <select name="college" id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
           <option class="focus:bg-gray-50 placeholder-gray-500" selected>All colleges</option>
-          <option class="" value="US">Arts and Science</option>
-          <option class="" value="CA">Business and Management</option>
-          <option class="" value="FR">Education</option>
-          <option class="" value="DE">Engineering and Technology</option>
+          <option class="" value="arts and sciences">Arts and Science</option>
+          <option class="" value="business and management">Business and Management</option>
+          <option class="" value="education">Education</option>
+          <option class="" value="engineering">Engineering and Technology</option>
         </select>
       </div>
-      
       <div class="relative w-full mt-3 md:mt-0 md:w-auto">
-        <form method="GET" action="search/{title}">
+       
         <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
         <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         </form>
@@ -91,176 +91,6 @@
     </div> 
     
 </div>
-
-
-
-  {{-- <main class="relative max-w-screen overflow-x-hidden" style="height: 480px;">
-    <div class="bg-cover bg-no-repeat bg-center md:h-full h-full" style="background-image: url({{ asset('/img/bg.jpg') }});">
-        <div class="absolute inset-0 bg-black opacity-60"></div>
-        <div class="container mx-auto md:h-96 flex flex-col items-center justify-center relative pt-14 md:pt-12 z-10">
-            <h1 class="text-2xl md:text-4xl font-regular text-white text-center px-8 md:px-35 pt-4">Discover Academic Excellence In Our University's Repository</h1>
-            <p class="text-md md:text-md font-light text-white text-center px-4 md:px-44 mb-1 my-4">Welcome to our digital repository, where knowledge meets innovation. Discover meticulously curated theses and academic works spanning various disciplines, harnessing the power of knowledge dissemination for generations to come.</p>
-            <div class="flex flex-col md:flex-row md:items-center mt-12">
-              <div class="relative">
-                <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700/50 dark:border-gray-600 dark:text-white">
-                  <option class="focus:bg-gray-50" selected>All colleges</option>
-                  <option class="" value="US">Arts and Science</option>
-                  <option class="" value="CA">Business and Management</option>
-                  <option class="" value="FR">Education</option>
-                  <option class="" value="DE">Engineering and Technology</option>
-                </select>
-              </div>
-              
-              <div class="relative w-full mt-3 md:mt-0 md:w-auto">
-                <form method="GET" action="search/{title}">
-                <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
-                <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                </form>
-                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-                  <span class="sr-only">Search</span>
-                </button>
-              </div>
-            </div>             
-        </div>
-    </div> --}}
-</main>
-
-<section class="py-8">
-
-  <div class="container mx-auto px-4 md:px-0">
-    <h2 class="text-4xl font-bold mb-4 text-center text-gray-700">COLLEGES</h2>
-    
-    <p class="text-center text-gray-600">Select colleges to browse thesis and academic works</p>
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 md:px-20 px-0">
-      <a href="categories/{{$cas->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
-        <div class="college-content pt-8 flex flex-col items-center">
-          <div class="college-image w-44 justify-center">
-            <img src="{{ asset('/img/CAS-logo.png') }}" alt="CAS">
-          </div>
-          <h3 class="text-lg font-bold text-gray-700 pt-8 pb-2">Arts and Science</h3>
-          <p class="text-gray-600 college-description text-sm px-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;Produce globally competitive graduates equipped with high ethical standard of professionalism in the field of Arts and Sciences.</p> <!-- Added py-2 class for padding -->
-        </div>
-      </a>
-      
-
-      <a href="categories/{{$cbm->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
-        <div class="college-content py-3 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
-          <img src="{{ asset('/img/cbm_logo_new.png')}}" alt="CBM">
-        </div>
-        </div>
-        <div class="college-content py-3">
-          <h3 class="bg-white text-lg font-bold text-gray-700 py-2 text-center">Business and Management</h3>
-          <p class="text-gray-600 college-description text-sm px-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;Produce globally competitive, value-laden professionals/entrepreneurs who can create social, environmental, and economic impact through research and community services.</p>
-        </div>
-      </a>
-      
-
-      <a href="categories/{{$coed->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300 ">
-        <div class="college-content py-1 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
-          <img src="{{ asset('/img/COED-logo.png') }}" alt="COED">
-        </div>
-        </div> 
-        <div class="college-content py-2">
-          <h3 class="text-lg font-bold text-gray-700 py-2 text-center">Education</h3>
-          <p class="text-gray-600 college-description text-sm text-justify px-2">The College of Education shall be the center for training, research and extension programs in Teacher Education for effective, morally, socially, culturally and environmentally-responsible Teacher Education leaders committed to pursuing academic excellence.</p>
-        </div>
-      </a>
-      
-      <a href="categories/{{$cet->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
-        <div class="college-content py-2 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
-          <img src="{{ asset('/img/CET-logo.png')}}"alt="CET">
-        </div>
-      </div> 
-        <div class="college-content py-2">
-          <h3 class="text-lg font-bold text-gray-700 py-2 text-center">Engineering and Technology</h3>
-          <p class="text-gray-600 college-description text-sm text-justify">A center for Engineering and Industrial Technology Education aimed at producing globally competitive graduates equipped with high ethical standards of professionalism</p>
-        </div>
-      </a>
-      </div>
-    </div>
-  </div>
-</section>
-<div hidden>
-  <p>{{count($theses)}}</p>
-  <p id="coed">
-  {{$coed->college}}
-  </p>
-  <p id="cas">
-    {{$cas->college}}
-  </p>
-  <p id="cbm">
-    {{$cbm->college}}
-  </p>
-  <p id="cet">
-    {{$cet->college}}
-  </p>
-
-  <p id="casCount">{{$cas_theses->count()}}</p>
-  <p id="cbmCount">{{$cbm_theses->count()}}</p>
-  <p id="coedCount">{{$coed_theses->count()}}</p>
-  <p id="cetCount">{{$cet_theses->count()}}</p>
-</div>
-
-<div class="container w-1/4 mx-auto px-4 md:px-0">
-  <canvas id="myChart"></canvas>
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    //show pop when hover
-    
-
-
-  function popup(){
-    let popup = document.getElementByClass('myPopup');
-    popup.removeAttribute('hidden');
-  }
-
-  function hidePopup(){
-    let popup = document.classList('myPopup');
-    popup.setAttribute('hidden', true);
-  }
-
-  
-  const ctx = document.getElementById('myChart');
-  let cas = document.getElementById('cas').textContent;
-  let coed = document.getElementById('coed').textContent;
-  let cet = document.getElementById('cet').textContent;
-  let cbm  = document.getElementById('cbm').textContent;
-
-  let casCount = document.getElementById('casCount').textContent;
-  let cbmCount = document.getElementById('cbmCount').textContent;
-  let cetCount = document.getElementById('cetCount').textContent;
-  let coedCount = document.getElementById('coedCount').textContent;
-  
-
-
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: [cas, cbm, coed, cet], // Our labels
-      datasets: [{
-        label: 'Number of Theses We Have',
-        data: [casCount, cbmCount, coedCount, cetCount],
-        backgroundColor: [
-          'rgb(255, 99, 100)',
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
-          ],
-          hoverOffset: 4
-      }]
-    },
-  });
-</script>
 
   <div class="container mx-auto mx- px-4">
     <div class="grid grid-cols md:grid-cols-1 gap-6">

@@ -63,6 +63,11 @@ function showTerms(){
     terms.classList.add('hidden');
   }
 
+  function guestModal(){
+    const guest = document.getElementById('guestModal');
+    guest.classList.toggle('hidden')
+  }
+
 </script>
 <style>
   .popup {
@@ -84,7 +89,6 @@ function showTerms(){
       
     </div>
     <img src="{{ asset('img/litaw_logo.png')}}" alt="Navbar Image" class="absolute inset-0 lg:w-1/4 mx-2 w-80 lg:mx-16 object-cover opacity-100">
-    
 </nav>
 
 <nav class="bg-navy-blue px-14 shadow-md font-sans font-semibold">
@@ -104,12 +108,12 @@ function showTerms(){
                   <a onclick="showTerms()" class="block py-2 pl-3 pr-4 text-white md:p-0">About</a>
               </li>
               <li>
-              @hasrole('contentModerator')
+              @hasanyrole('contentModerator|admin')
                   <a href="{{route('moderator.index')}}" class="block py-2 pl-3 pr-4 text-white md:p-0">Theses Manager</a>
               @else
-              {{-- <a href="#" class="block py-2 pl-3 pr-4 text-white md:p-0">Theses </a>
-              </li> --}}
-              @endhasrole
+              <a href="{{route('theses')}}" class="block py-2 pl-3 pr-4 text-white md:p-0">Theses </a>
+              </li>
+              @endhasanyrole
               {{-- <li>
                   <a href="/journal.html" class="block py-2 pl-3 pr-4 text-white md:p-0">Journals</a>
               </li> --}}
@@ -156,6 +160,55 @@ function showTerms(){
   </div>
 </nav>
 
+<div id="guestModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+  <div class="relative w-full max-w-md max-h-full">
+  
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onclick="guestRequestModal()">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      @if (session('status'))
+            <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+                {{ session('status') }}
+            </div>
+        @endif
+      <form method="POST" action="{{ route('login') }}" class="bg-white border rounded-md shadow-md p-8" id="loginForm">
+          @csrf
+        <h3 class="mb-4 text-xl font-medium text-gray-900">Submit a request to access this file</h3>
+        <x-validation-errors class="mb-4" />
+          <div class="relative z-0 w-full mb-6 group top-4">
+            <input type="email" name="email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+          </div>
+
+          <div class="relative z-0 w-full mb-6 group top-4">
+              <input type="text" name="first_name" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First Name</label>
+          </div>
+
+          <div class="relative z-0 w-full mb-6 group top-4">
+            <input type="text" name="last_name" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last Name</label>
+        </div>
+
+        <div class="relative z-0 w-full mb-6 group top-4">
+          <textarea type="text" name="notes" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /></textarea>
+          <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Notes</label>
+      </div>
+
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            <div class="flex items-center justify-center mt-2">
+              <p class="text-sm text-gray-600 dark:text-gray-400"><a href="#" onclick="toggleSignUpForm()" class="text-blue-600 dark:text-blue-500 hover:underline"> Create Account</a> or  <a href="#" onclick="toggleLoginModal()" class="text-blue-600 dark:text-blue-500 hover:underline"> Login </a> to get an access to all resources.</p>
+            </div> 
+            
+          </form>
+      </div>
+    </div>
+  </div>
 
 <div id="loginModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
   <div class="absolute inset-0 bg-black opacity-50"></div>

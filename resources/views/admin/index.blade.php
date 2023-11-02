@@ -19,8 +19,6 @@
           <a href="#" class="text-gray-600 text-md hover:underline"><h2 class="text-lg font-semibold text-gray-600">Roles</h2></a>
         </ul>
       </div>
-      
-  
     </div>
 <section class="py-8 w-3/4">
   <!-- Content for the left section -->

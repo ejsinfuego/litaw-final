@@ -34,13 +34,48 @@ class ThesesController extends Controller
         $coed = 'college of education';
         $cet = 'college of engineering and technology';
 
-        return view('home', [
+        //check route
+        if(request()->route()->getName() == 'theses'){
+            $theses = Theses::class;
+            $departments = [];
+            $colleges = College::all();
+            foreach($colleges as $college){
+                //append in departmens array
+                array_push($departments, $college->college);
+            }
+
+        return view('theses', [
             'theses' => $theses::with('authors')->latest()->get()->where('approved', 1),
             'cas' => College::where('college', $cas)->get()->first(),
             'cbm' => College::where('college', $cbm)->get()->first(),
             'coed' => College::where('college', $coed)->get()->first(),
             'cet' => College::where('college', $cet)->get()->first(),
             'colleges' => College::all(),
+            'cbm_theses' => $theses::where('college_id', 2)->where('approved', 1)->get(),    
+            
+            'cas_theses' => $theses::where('college_id', 1)->where('approved', 1),
+
+            'coed_theses' => $theses::where('college_id', 4)->where('approved', 1)->get(),
+
+            'cet_theses' => $theses::where('college_id', 3)->where('approved', 1)->get(),
+
+            'recent_theses' => $theses::with('authors')->latest()->get()->where('approved', 1)->take(3),
+            'courses' => DB::table('courses')->get(),
+
+            //highest views
+            'highest_views' => DB::table('viewed_theses')->select('theses_id')->groupBy('theses_id')->orderByRaw('COUNT(*) DESC')->limit(3)->get(),
+
+            ]);
+        }
+        $colleges = College::all();
+        $colleges = $colleges->value('college');
+        return view('home', [
+            'theses' => $theses::with('authors')->latest()->get()->where('approved', 1),
+            'cas' => College::where('college', $cas)->get()->first(),
+            'cbm' => College::where('college', $cbm)->get()->first(),
+            'coed' => College::where('college', $coed)->get()->first(),
+            'cet' => College::where('college', $cet)->get()->first(),
+            'colleges' => College::get('college')->values(),
             'cbm_theses' => $theses::where('college_id', 2)->where('approved', 1)->get(),    
             
             'cas_theses' => $theses::where('college_id', 1)->where('approved', 1),
@@ -70,7 +105,7 @@ class ThesesController extends Controller
     }
 
     public function submit()
-    {
+    {   
         return view('submit', [
             'courses' => DB::table('courses')->get(),
             'colleges' => DB::table('colleges')->get(),
@@ -80,25 +115,71 @@ class ThesesController extends Controller
 
     public function categories($key)
     {   
+        $theses = Theses::where('approved', 1)->get('course_id');
+        $courses = array();
+        $course_that_have_theses = array();
+        foreach($theses as $thesis){
+            array_push($courses, $thesis->course_id);
+        }
+        $course_count = array_count_values($courses);
+
+        foreach($course_count as $keys => $value){
+            $course_count[$keys] = Course::where('id', $keys)->get()->first();
+            array_push($course_that_have_theses, $course_count[$keys]);
+        }
         return view('colleges', [
-            'theses' => Theses::where('college_id', $key)->where('approved', 1)->get(),
+            'theses' => Theses::with('authors')->where('college_id', $key)->where('approved', 1)->get()->sortByDesc('year'),
             'college' => College::where('id', $key)->get()->first(),
             'years' => Year::all(),
             'program' => DB::table('courses')->where('course', $key)->get()->first(),
-            'courses' => DB::table('courses')->get()->take(5),
+            'courses' => $course_that_have_theses,
             'course' => Theses::with('course')->where('course_id', $key)->get(),
+            
 
+        ]);
+    }
+
+    public function stats(Theses $theses, User $user)
+    {   
+        // $collage = array();
+        // $colleges = College::all();
+        // foreach($colleges as $college){
+        //     array_push($collage, $college->college);
+        // 
+        $user = Auth::user();
+        return view('statistics', [
+            'theses' => $theses->where('college_id', $user->college_id)->get(),
+            'college' => College::where('id', $user->college_id)->get(),
+            'IT' => Theses::where('course_id', 1)->get(),
+            'BACOM' => Theses::where('course_id', 10)->get(),
+            'MATH' => Theses::where('course_id', 13)->get(),
+            'GEO' => Theses::where('course_id', 12)->get(),
+            'BIO' => Theses::where('course_id', 11)->get(),
+            'COMSCI'=> Theses::where('course_id', 2)->get(),
         ]);
     }
 
     public function years($year)
     {   
+        $theses = Theses::where('approved', 1)->get('course_id');
+        $courses = array();
+        $course_that_have_theses = array();
+        foreach($theses as $thesis){
+            array_push($courses, $thesis->course_id);
+        }
+        $course_count = array_count_values($courses);
+        
+        foreach($course_count as $key => $value){
+            $course_count[$key] = Course::where('id', $key)->get()->first();
+            array_push($course_that_have_theses, $course_count[$key]);
+        }
+
         return view('year', [
             'taon' => Year::where('id', $year)->get()->first(),
             'theses' => Theses::where('year_id', $year)->where('approved', 1)->get(),
             'college' => College::all(),
             'years' => Year::all(),
-            'courses' => DB::table('courses')->get(),
+            'courses' => $course_that_have_theses,
         ]);
     }
 
@@ -109,7 +190,7 @@ class ThesesController extends Controller
             'theses' => Theses::where('course_id', $course)->where('approved', 1)->get(),
             'college' => College::all(),
             'years' => Year::all(),
-            'courses' => DB::table('courses')->get(),
+            'courses' => DB::table('courses')->get()->take(5),
         ]);
     }
 
@@ -117,7 +198,8 @@ class ThesesController extends Controller
     public function singleThesis(Theses $theses)
     {   
         //We will be retrieving the session_id and theses_id from the current session which we will gonna query if there is already a row with the same data. If no return, it will gonna insert another row. The general idea is the theses_id must be different from session_id or vice versa.
-    
+        if($theses->approved == 1){
+            
         $check = DB::table('viewed_theses')->where('session_id',session()->getId())->where('theses_id', $theses->id)->get();
 
         if(sizeOf($check) == null){
@@ -127,6 +209,8 @@ class ThesesController extends Controller
                 'theses_id' => $theses->id, 
             ]);
         }
+        }
+        
         // $pathToPdf = Storage::disk('public')->path($theses->filename);
         // $pdf = new Pdf($pathToPdf);
         // $pathToWhereImageShouldBeStored = storage_path('app/public/theses_img/'.$theses->filename.'.jpg');
@@ -140,7 +224,7 @@ class ThesesController extends Controller
             
             'likes' => DB::table('likes')->where('theses_id', $theses->id)->get(),
             'courses' => DB::table('courses')->get(),
-            'colleges' => DB::table('colleges')->get(),
+            'colleges' => DB::table('colleges')->get()->take(5),
             'years' => DB::table('years')->get(),
 
             'recent_theses' => DB::table('theses')->latest()->get()->where('approved', 1)->take(5),
@@ -194,13 +278,28 @@ class ThesesController extends Controller
     }
 
     public function search(Request $request)
-    {
+    {   
+        // this block sorts what course has the highest number of theses and display accordingly
+        $theses = Theses::where('approved', 1)->get('course_id');
+        $courses = array();
+        $course_that_have_theses = array();
+        foreach($theses as $thesis){
+            array_push($courses, $thesis->course_id);
+        }
+        $course_count = array_count_values($courses);
+        
+        foreach($course_count as $key => $value){
+            $course_count[$key] = Course::where('id', $key)->get()->first();
+            array_push($course_that_have_theses, $course_count[$key]);
+        }
+        //end of this block
+        
         $term = $request->searchTitle;
         return view('browse-theses', [
             'theses' => Theses::search($term)->where('approved', 1)->get(),
             'college' => College::search($term)->get(),
             'years' => Year::all(),
-            'courses' => DB::table('courses')->get(),
+            'courses' => $course_that_have_theses,
             'programs' => Course::search($term)->get()->take(5),
             'colleges' => College::all()->take(5),
         ]);

@@ -1,4 +1,8 @@
+
+
 <x-nav-bar></x-nav-bar>
+
+  
 <div class="flex items-center justify-between md:ml-24 ml-6 mt-12">
 <h1 class="inline text-3xl font-semibold text-gray-700">Browse Resources from <strong>
   @if($college!=null)
@@ -12,25 +16,21 @@
 <div class="flex flex-col md:flex-row items-center justify-between ml-4 mr-4 mt-4 md:ml-24 lg:mr-24">
   <div class="flex md:flex-row  md:space-y-0 md:space-x-4 space-x-2">
     <div>
-      <select class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
+      <select id="filter" class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4" >
         <option value="relevance">Sort by: Relevance</option>
         <option value="title">Recent</option>
         <option value="title">Oldest</option>
         <option value="title">Most Viewed</option>
         <option value="title">Most Cited</option>
-        <option value="author">Title A-Z</option>
-        <option value="year">Title Z-A</option>
+        <option value="title">Title A-Z</option>
+        <option value="year">Year</option>
     </select>
     </div>
 
     <div>
-      <select class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
-        <option value="relevance">Show 10 per page</option>
-        <option value="title">Show 10 per page</option>
-        <option value="title">Show 25 per page</option>
-        <option value="title">Show 50 per page</option>
-        <option value="title">Show 75 per page</option>
-        <option value="title">Show 100 per page</option>
+      <select id="orderType" class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
+        <option value="desc">Descending</option>
+        <option value="asc">Ascending</option>
     </select>
     </div>
   </div>
@@ -58,12 +58,19 @@
     <ul class="space-y-4">
       @if($theses->isNotEmpty())
         @foreach ($theses as $thesis)
-        <li class="py-2 border-b border-gray-400">
-        <a href='../view/{{$thesis->id}}' class="text-gray-600 font-medium text-md">{{ $thesis->title}}</a>
-        <p class="text-gray-600 text-sm mt-1"><em>Author(s): 
+        <li class="py-2 border-b border-gray-400 thesis">
+        <a href='../view/{{$thesis->id}}' class="text-gray-600 font-medium text-md title">{{ $thesis->title}}</a>
+        <br>
+        <p class="text-gray-600 text-sm mt-1 inline"><em>Author(s): 
         @foreach ($thesis->authors as $author )
-        {{$author->name}}
-        @endforeach | Year: {{$thesis->year->year}} | Course: {{Str::title($thesis->course->course)}}</em></p>
+        {{$author->author}}
+        @endforeach | Year: </em></p>
+        <p class="text-gray-600 text-sm mt-1 inline year"><em>
+        {{$thesis->year->year}}
+        </em></p>
+        <p class="text-gray-600 text-sm mt-1 inline"><em>
+         | Course: {{Str::title($thesis->course->course)}}
+        </em></p>
       </li>
         @endforeach
      @endif
@@ -130,57 +137,4 @@
 </div>
 
 
-<footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
-  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-      <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="#" class="flex items-center mb-4 sm:mb-0">
-              <img src="{{asset('img/logo_footer.png')}}" class="h-8 mr-3" alt="LITAW Logo" />
-              <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">LITAW</span>
-          </a>
-          <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
-              </li>
-              <li>
-                  <a href="#" class="hover:underline">Contact</a>
-              </li>
-          </ul>
-      </div>
-      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
-  </div>
-</footer>
-
-
-
-
-
-<!--navigation toggle and login modal-->
-<script>
-  function toggleLoginNavItem() {
-      var loginNavItem = document.getElementById("loginNavItem");
-      loginNavItem.classList.toggle("hidden");
-  }
-
-  function toggleLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.toggle('hidden');
-  }
-
-  function hideLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.add('hidden');
-  }
-  </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-
-
-</body>
-</html>
+<x-footer></x-footer>

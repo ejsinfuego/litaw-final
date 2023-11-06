@@ -9,9 +9,9 @@
                       <p class="py-1">Status
                         @if($theses->approved == 0)
                         <span class="text-red-500">Pending</span>
-                        @endif 
+                        @else
                         <span class="text-green-500">Approved</span> 
-                        
+                        @endif
                         </p>
                     @endhasrole
                     <p class="text-gray-600 text-md mt-0 mb-4">Author(s): @foreach ($theses->authors as $author )
@@ -20,7 +20,7 @@
                     <p class="text-gray-400 text-sm mb-4">Year Published: {{$theses->year->year}}</p>
                     <p class="text-gray-400 text-sm mb-4">Date Upload: {{date('M d, Y',strtotime($theses->created_at))}}</p>
                     <h2 class="text-lg font-semibold text-gray-600 mb-1">Abstract</h2>
-                    <p class="text-gray-600 text-md p-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$theses->abstract}}</p>
+                    <p class="text-gray-600 text-md p-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$theses->abstract}}</p>
                     <p class="text-gray-600 text-md italic p-2">Keywords: {{$theses->metakeys}}</p>
                     <div class="border">
                       <img data-pdf-thumbnail-file="/storage/{{$theses->filename}}">
@@ -42,6 +42,7 @@
                               Like
                             </button>
                           @else
+                          @hasanyrole('registeredUser')
                           <a href="{{ route('theses.like', $theses->id) }}" class="bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white px-4 py-2 border border-red-500 hover:border-transparent rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2">
                               <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
@@ -52,9 +53,9 @@
                               @else
                               Unlike
                               @endif
-                            @endforeach
-                           
+                            @endforeach 
                           </a>
+                          @endhasanyrole
                         @endguest
                       </div>
                      
@@ -77,37 +78,47 @@
                       @endif
                     
                       </div>
-
+                      
                       <div class="mt-6">
                         <h3 class="text-lg font-semibold text-md text-gray-600">Leave a Comment</h3>
                         <form method="POST" class="mt-4" id="commentForm" action="{{ route('theses.comment', $theses->id) }}">
                           @csrf
                           @method('PATCH')
-                          <div class="mb-4">
+                          <div class="mb-4"> 
+                            @hasrole('registeredUser')
                             <label for="comment" class="block text-md text-gray-600 font-semibold">Comment:</label>
                             <input type="hidden" name="thesis_id" value="{{$theses->id}}">
+                           
                             <div class="relative">
                               <textarea id="comment" name="comment" rows="4" class="textarea input-bordered border focus:ring-0 focus:border-gray-600 border-gray-400 px-4 py-2 pr-12 mt-2 w-full" placeholder="Type your comment here..."></textarea>
+                              
                               @auth
                                  <button type="submit" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                                 </svg>
                               </button>
-                              @endauth
+                              @endauth 
+                              
                               <a href="#" onclick="toggleLoginModal()" class="absolute right-2 bottom-2 bg-transparent text-gray-600 px-3 py-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                                 </svg>
                               </a>
                             </div>
+                            @else
+                            <div class="div">
+                              <div class="p">
+                                You are not allowed to comment
+                              </div>
+                            </div>
+                            @endhasrole
                           </div>
                         </form>
                       </div>
-                      
+
                     </div>
                 </div>
-  
               <div class="md:w-1/4 p-4">
                   <h2 class="text-lg font-semibold text-gray-600">Paper Statistics</h2>
                   <div class="mt-4 grid grid-cols-3 gap-4">
@@ -121,8 +132,6 @@
                 <p class="text-gray-600 text-md">{{$likes->count()}}</p>
                     </div>
             </div>
-          
-            
                   <hr class="my-12 mb-2 border-gray-400">
 
                   <div>
@@ -132,9 +141,8 @@
             
                   <div class="mt-4">
                     <h2 class="text-lg font-semibold text-gray-600">Course</h2>
-                    <p class="text-gray-600 text-md">{{$theses->course->course}}</p>
+                    <a href="{{ route('course', $theses->course_id) }}" class="text-gray-600 text-md">{{$theses->course->course}}</a>
                   </div>
-            
                   <div class="mt-4">
                     <h3 class="text-md font-semibold text-gray-600">Metakeys</h3>
                     <div class="flex flex-wrap gap-2">
@@ -143,28 +151,20 @@
                       @endforeach
                     </div>
                   </div>
-
                   <hr class="my-12 mb-2 border-gray-400">
-
                     <div class="mt-4">
                       <h2 class="text-lg font-semibold text-gray-600">Recent Submissions</h2>
                       @foreach ($recent_theses as $latest)
-                      
                         @if ($latest->id != $theses->id)
                         <ul class="space-y-4 mt-2">
                           <a href="\view/{{$latest->id}}" class="text-gray-600 text-md hover:underline font-semibold">{{Str::title($latest->title)}}</a>
                         </ul>
                         @endif
-                        
-                    
                       @endforeach
                     </div>
-                    
-               
                   </div>
               </div>
               </div>
-                  
                 </div>
                 </div>
               </div>
@@ -182,9 +182,6 @@
             
           </div>
 
-
-          
-          
 <footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
   <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
       <div class="sm:flex sm:items-center sm:justify-between">

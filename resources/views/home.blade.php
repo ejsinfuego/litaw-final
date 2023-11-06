@@ -1,4 +1,5 @@
 @include('components.nav-bar', ['courses' => 'courses'])
+
 <style>
   .speech-bubble {
   background: #ddd;
@@ -17,7 +18,7 @@
 	border-radius: .4em;
 }
 </style>
-<div id="default-carousel" class="relative w-full h-96" data-carousel="slide">
+<div id="default-carousel" class="relative w-full h-auto md:h-96" data-carousel="slide">
   <!-- Carousel wrapper -->
   <div class="relative h-56 overflow-hidden  md:h-96">
     <!-- Item 1 -->
@@ -65,7 +66,7 @@
     </span>
   </button>
 </div>
-  <div class="container mx-auto md:px-20 px-0">
+  <div class="container mx-auto md:px-20 px-10">
     <div class="flex flex-col justify-center md:flex-row md:items-center mt-12">
       <div class="relative">
         <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
@@ -77,7 +78,7 @@
         </select>
       </div>
       
-      <div class="relative w-full mt-3 md:mt-0 md:w-auto">
+      <div class="relative mt-3 md:mt-0 md:w-auto">
         <form method="GET" action="search/{title}">
         <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
         <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -127,7 +128,7 @@
     </div> --}}
 </main>
 
-<section class="py-8">
+<section class="py-8 md:text-base text-xs">
 
   <div class="container mx-auto px-4 md:px-0">
     <h2 class="text-4xl font-bold mb-4 text-center text-gray-700">COLLEGES</h2>
@@ -137,7 +138,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 md:px-20 px-0">
       <a href="categories/{{$cas->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content pt-8 flex flex-col items-center">
-          <div class="college-image w-44 justify-center">
+          <div class="college-image w-36 md:w-44 justify-center">
             <img src="{{ asset('/img/CAS-logo.png') }}" alt="CAS">
           </div>
           <h3 class="text-lg font-bold text-gray-700 pt-8 pb-2">Arts and Science</h3>
@@ -207,10 +208,9 @@
   <p id="cetCount">{{$cet_theses->count()}}</p>
 </div>
 
-<div class="container w-1/4 mx-auto px-4 md:px-0">
+<div class="container md:w-1/4 mx-auto w-auto px-4 md:px-0">
   <canvas id="myChart"></canvas>
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -263,7 +263,7 @@
   });
 </script>
 
-  <div class="container mx-auto mx- px-4">
+  <div class="container md:mx-auto px-4">
     <div class="grid grid-cols md:grid-cols-1 gap-6">
       <div class="mt-4 md:mt-0">
 
@@ -271,7 +271,7 @@
           <span class="py-2 text-gray-700 font-bold" data-content="recentTheses">Most Viewed Theses</span>
         </div>
        
-        <div class="bg-white rounded-md flex flex-column z-10">
+        <div class="bg-white rounded-md md:flex md:flex-column z-10">
           @foreach ($highest_views as $views)
           <div class="my-2 py-3 border-b border-gray-300 flex flex-column">
           

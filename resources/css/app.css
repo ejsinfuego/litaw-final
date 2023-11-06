@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@import 'daisyui/dist/daisyui.css';
-
-[x-cloak] {
-    display: none;
-}

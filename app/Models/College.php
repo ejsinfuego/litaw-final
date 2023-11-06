@@ -25,10 +25,6 @@ class College extends Model
        
     ];
 
-    public function user(): hasMany {
-        return $this->hasMany(User::class);
-    }
-
     public function theses(): HasMany {
         return $this->hasMany(theses::class);
     }

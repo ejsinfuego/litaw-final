@@ -84,6 +84,12 @@ class User extends Authenticatable
         return $this->hasMany(Authors::class);
     }
 
+
+    public function course()
+    {
+        return $this->hasOne(Course::class);
+    }
+
     /**
      * Get 
      */

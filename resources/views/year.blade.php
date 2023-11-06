@@ -58,7 +58,7 @@
         <a href='../view/{{$thesis->id}}' class="text-gray-600 font-medium text-md">{{ $thesis->title}}</a>
         <p class="text-gray-600 text-sm mt-1"><em>Author(s): 
         @foreach ($thesis->authors as $author )
-        {{$author->name}}
+        {{$author->author}}
         @endforeach | Year: {{$thesis->year->year}} | Course: {{Str::title($thesis->course->course)}}</em></p>
       </li>
         @endforeach

@@ -66,6 +66,7 @@
     </div>
    
 <div class="p-3 rounded-lg border border-gray-200 shadow-md justify-content-center">
+<div class="p-9 rounded-lg border border-gray-200 shadow-md justify-content-center">
 <section class="py-8 w-max">
   <div>
     <h3>Total Number of Theses Currently Submitted

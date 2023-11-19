@@ -8,11 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+    */
     public function up(): void
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->string('author');
+            $table->string('email')->unique()->nullable()->after('author');
             $table->id();
             $table->timestamps();
         });

@@ -16,7 +16,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script src="{{asset('pdfThumbnails/pdfThumbnails.js')}}" data-pdfjs-src="{{asset('pdfThumbnails/pdf.js/build/pdf.js')}}"></script>
-
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
     <script>
         tailwind.config = {
           theme: {
@@ -68,9 +71,24 @@ function showTerms(){
     guest.classList.toggle('hidden')
   }
 
+  function regAsTeacher(){
+      const course = document.getElementById('course');
+      const id_number = document.getElementById('id_number');
+      const user = document.getElementById('userType');
+      if(user.textContent == 'Student'){
+        user.textContent = 'Faculty';
+      }else{
+        user.textContent = 'Student';
+      }
+      
+      course.classList.toggle('hidden');
+      id_number.classList.toggle('hidden');
+  }
+
 </script>
+
 <style>
-  .popup {
+  .popup {  
       display: none;
   }
   .group:hover .popup {
@@ -122,7 +140,7 @@ function showTerms(){
               </li> --}}
               <li>
                 @guest
-                <a href="#" onclick="toggleLoginModal()" class="block py-2 pl-3 pr-4 text-white md:p-0">Submit Manuscript</a>
+                <a href="{{ route('login')}}" class="block py-2 pl-3 pr-4 text-white md:p-0">Submit Manuscript</a>
                 @else
                 <a href="/submit" class="block py-2 pl-3 pr-4 text-white md:p-0">Submit Manuscript</a>
                 @endguest
@@ -160,7 +178,7 @@ function showTerms(){
   </div>
 </nav>
 
-<div id="guestModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+{{-- <div id="guestModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
   <div class="absolute inset-0 bg-black opacity-50"></div>
   <div class="relative w-full max-w-md max-h-full">
   
@@ -208,7 +226,7 @@ function showTerms(){
           </form>
       </div>
     </div>
-  </div>
+  </div> --}}
 
 <div id="loginModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
   <div class="absolute inset-0 bg-black opacity-50"></div>
@@ -264,7 +282,6 @@ function showTerms(){
   <div id="terms" class="fixed overflow-auto inset-0 flex items-center justify-center z-50 hidden">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="relative w-full max-w-xxl max-h-full">
-    
       <div class="relative w- bg-white rounded-lg shadow dark:bg-gray-700">
         <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onclick="hideTerms()">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -282,100 +299,92 @@ function showTerms(){
           <p class="text-gray-700 py-3">Welcome to the LITAW: Local Indexing of Theses and Academic Works. This is an unofficial digital repository of theses Partido State University where students can look for Local Related Studies and Literature for their thesis writing.<br></p>
           <div class="text-gray-600 justify-center px-2">
             <h3 class="mb-4 text-xl font-medium text-gray-900">Terms and Conditions</h3>
-<p>Last Updated: October 18, 2023</p>
+                <p>Last Updated: October 18, 2023</p>
 
-<p class="py-3">
-By accessing and using this Repository, you agree to be bound by the following Terms and Conditions. If you do not agree to these terms, please do not use the Repository.</p>
+                <p class="py-3">
+                By accessing and using this Repository, you agree to be bound by the following Terms and Conditions. If you do not agree to these terms, please do not use the Repository.</p>
 
-<p>1. Use of the Repository</p>
+                <p>1. Use of the Repository</p>
 
-<p class="pl-5">1.1. The Repository is a digital platform designed to store, access, and disseminate theses and related academic content.
-</p>
-<p class="pl-5">
-1.2. Users may access and use the Repository for personal, educational, research, and non-commercial purposes.  
-</p>
+                <p class="pl-5">1.1. The Repository is a digital platform designed to store, access, and disseminate theses and related academic content.
+                </p>
+                <p class="pl-5">
+                1.2. Users may access and use the Repository for personal, educational, research, and non-commercial purposes.  
+                </p>
 
-<p class="pl-5">
-1.3. Users are prohibited from using the Repository for any unlawful or malicious activities, including but not limited to hacking, distributing malware, or violating intellectual property rights.  
-</p>
+                <p class="pl-5">
+                1.3. Users are prohibited from using the Repository for any unlawful or malicious activities, including but not limited to hacking, distributing malware, or violating intellectual property rights.  
+                </p>
 
-<p>
-2. Copyright and Licensing  
-</p>
+                <p>
+                2. Copyright and Licensing  
+                </p>
 
-<p class="pl-5">
-2.1. All theses and related content made available on the Repository are subject to copyright protection and may be protected by licensing agreements.
-</p>
-<p class="pl-5">
-2.2. Users may access, download, and use the content in accordance with the permissions and restrictions outlined in the associated licensing terms, which are provided alongside each thesis.  
-</p>
+                <p class="pl-5">
+                2.1. All theses and related content made available on the Repository are subject to copyright protection and may be protected by licensing agreements.
+                </p>
+                <p class="pl-5">
+                2.2. Users may access, download, and use the content in accordance with the permissions and restrictions outlined in the associated licensing terms, which are provided alongside each thesis.  
+                </p>
 
-<p class="pl-5">
- 2.3. It is the responsibility of users to respect and comply with the applicable copyright and licensing terms. Any unauthorized use or distribution of content may result in legal action. 
-</p>
+                <p class="pl-5">
+                2.3. It is the responsibility of users to respect and comply with the applicable copyright and licensing terms. Any unauthorized use or distribution of content may result in legal action. 
+                </p>
 
-<p>
-3. User Responsibilities
-</p>
-<p class="pl-5">
-  3.1. Users are solely responsible for the content they upload or submit to the Repository.<br>
-  3.2. Users must ensure that any content they contribute to the Repository does not infringe upon the intellectual property rights, privacy, or other legal rights of others.<br>
-  3.3. Users should not upload any content that is defamatory, offensive, discriminatory, or otherwise objectionable.
-</p>
-<p>
-4. Privacy and Data Protection<br>
-</p>
-<p class="pl-5">
-4.1. We collect and process personal data in accordance with our Privacy Policy, which can be accessed on our website. By using the Repository, you consent to the collection and use of your personal data as described in the Privacy Policy.
-</p>
+                <p>
+                3. User Responsibilities
+                </p>
+                <p class="pl-5">
+                  3.1. Users are solely responsible for the content they upload or submit to the Repository.<br>
+                  3.2. Users must ensure that any content they contribute to the Repository does not infringe upon the intellectual property rights, privacy, or other legal rights of others.<br>
+                  3.3. Users should not upload any content that is defamatory, offensive, discriminatory, or otherwise objectionable.
+                </p>
+                <p>
+                4. Privacy and Data Protection<br>
+                </p>
+                <p class="pl-5">
+                4.1. We collect and process personal data in accordance with our Privacy Policy, which can be accessed on our website. By using the Repository, you consent to the collection and use of your personal data as described in the Privacy Policy.
+                </p>
 
-<p>5. Disclaimer<br>
-</p>
-<p class="pl-5">
-5.1. We make no warranties or representations about the accuracy, completeness, or suitability of the content available in the Repository. Use the content at your own risk.<br>5.2. We are not responsible for any loss, damage, or harm that may result from your use of the Repository.
+                <p>5. Disclaimer<br>
+                </p>
+                <p class="pl-5">
+                5.1. We make no warranties or representations about the accuracy, completeness, or suitability of the content available in the Repository. Use the content at your own risk.<br>5.2. We are not responsible for any loss, damage, or harm that may result from your use of the Repository
+                </p>
+                <p>
+                  6. Termination
+                <br>
+                </p>
+                <p class="pl-5">
+                6.1. We reserve the right to terminate or suspend access to the Repository at our discretion and without prior notice.
+                <br>
+                6.2. Upon termination, users must cease using the Repository and destroy any downloaded or printed materials from the Repository.
+                </p>
+                <p>
+                7. Changes to Terms and Conditions
+                <br>
+                </p>
+                <p class="pl-5">
+                7.1. We may update these Terms and Conditions at any time. The most current version will be posted on the Repository's website. It is your responsibility to review these terms periodically.
+                </p>
+                <p>
+                8. Governing Law
+                <br>
+                </p>
+                <p class="pl-5">
+                8.1. These Terms and Conditions are governed by and construed in accordance with the laws of "Data Privacy Act of 2012". 
+                </p>
+                <p class="py-4">
+                By using the Thesis Digital Repository, you acknowledge that you have read and understood these Terms and Conditions and agree to be bound by them. If you do not agree with these terms, please refrain from using the Repository.
 
-</p>
-
-
-<p>
-  6. Termination
-<br>
-</p>
-<p class="pl-5">
-6.1. We reserve the right to terminate or suspend access to the Repository at our discretion and without prior notice.
-<br>
-6.2. Upon termination, users must cease using the Repository and destroy any downloaded or printed materials from the Repository.
-</p>
-<p>
-7. Changes to Terms and Conditions
-<br>
-</p>
-<p class="pl-5">
-7.1. We may update these Terms and Conditions at any time. The most current version will be posted on the Repository's website. It is your responsibility to review these terms periodically.
-</p>
-<p>
- 8. Governing Law
-<br>
-</p>
-<p class="pl-5">
-8.1. These Terms and Conditions are governed by and construed in accordance with the laws of "Data Privacy Act of 2012". 
-</p>
-
-<p class="py-4">
- By using the Thesis Digital Repository, you acknowledge that you have read and understood these Terms and Conditions and agree to be bound by them. If you do not agree with these terms, please refrain from using the Repository.
-
-For any questions or concerns regarding these Terms and Conditions, please contact us at litaw@gmail.com.
- 
-</p>
-<p>
-  LITAW: Local Indexing of Theses and Academic Works<br>
-  litaw@gmail.com<br>
-  Date: October 18, 2023
-</p>
-
-
-
-
+                For any questions or concerns regarding these Terms and Conditions, please contact us at litaw@gmail.com.
+                
+                </p>
+                <p>
+                  LITAW: Local Indexing of Theses and Academic Works<br>
+                  litaw@gmail.com<br>
+                  Date: October 18, 2023
+                </p>
             </p>
           </div>
             </div>
@@ -383,102 +392,9 @@ For any questions or concerns regarding these Terms and Conditions, please conta
       </div>
     </div>
 
-  <div id="studentSignUpForm" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="relative w-full max-w-md max-h-full">
-    
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onclick="hideSignUpModal()">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-        @if (session('status'))
-              <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-                  {{ session('status') }}
-              </div>
-          @endif
-        
-        @php
-        $courses = App\Models\Course::all();
-        $colleges = App\Models\College::all();
-        @endphp
-        <form method="POST" action="{{route('register')}}" class="bg-white border rounded-md shadow-md p-8">
-        @csrf
-      <h3 class="mb-4 text-xl font-medium text-gray-900">Create an account</h3>
-      <p class="mb-4 text-sm font-medium text-gray-900">Note: Items marked with * are required.</p>
-      <div class="relative z-0 w-full mb-6 group">
-        <input type="text" name="first_name" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name<span class="text-red-500">*</span></label>
-      </div>
+  
 
-      <div class="relative z-0 w-full mb-6 group">
-        <input type="text" name="last_name" id="floating_last_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last Name<span class="text-red-500">*</span></label>
-      </div>
-      <div class="relative z-0 w-full mb-6 group">
-        <input pattern="[0-9]*" name="student_id" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">ID Number<span class="text-red-500">*</span></label>
-      </div>
-
-      <div class="relative z-0 w-full mb-6 group">
-        <input type="email" name="email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Institution email address<span class="text-red-500">*</span></label>
-      </div>
-
-      <div class="relative z-0 w-full mb-6 group">
-        <select id="floating_email" name="college" class="lock py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" required>
-        <optgroup class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" label="Select College"></optgroup>
-        @foreach ($colleges as $college )
-        <option value="{{$college->id}}" class="text-gray-900">{{$college->college}}</option>
-        @endforeach
-        </select>
-        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" style="left: 2px;">College<span class="text-red-500">*</span></label>
-
-      </div>
-      <div class="relative z-0 w-full mb-6 group">
-        <select id="floating_email" name="program" class="lock py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" required>
-        <optgroup class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" label="Select College"></optgroup>
-        @foreach ($courses as $course)
-        <option value="{{$course->id}}" class="text-gray-900">{{$course->course}}</option>
-        @endforeach
-        </select>
-        <label for="program" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" style="left: 2px;">Programs<span class="text-red-500">*</span></label>
-
-      </div>
-
-      <div class="relative z-0 w-full mb-6 group">
-        <input type="password" name="password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password<span class="text-red-500">*</span></label>
-      </div>
-
-      <div class="relative z-0 w-full mb-6 group">
-        <input type="password" name="password_confirmation" id="floating_repeat_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="password_confirmation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password<span class="text-red-500">*</span></label>
-      </div>
-       
-      <fieldset>
-        <div class="flex items-center mb-4">
-          <input checked id="checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" required>
-            <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to the <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a><span class="text-red-500">*</span></label>
-        </div>
-      </fieldset>
-
-      <div class="flex items-center">
-          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register</button>
-        </div>
-        <div class="flex items-center justify-center mt-2">
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            Already have an account? <a id="loginLink" href="/login.html" class="text-blue-600 dark:text-blue-500 hover:underline">Sign in</a>
-          </p>
-       </div>
-      </form>
-              
-            
-        </div>
-      </div>
-    </div>
+  </div>
    
     
 

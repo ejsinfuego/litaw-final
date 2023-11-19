@@ -17,6 +17,7 @@ use App\Policies\ThesisPolicy;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ThesesController extends Controller
@@ -28,72 +29,152 @@ class ThesesController extends Controller
      
     public function index(Theses $theses): View
     {
-        //
-        $cas = 'college of arts and sciences';
-        $cbm = 'college of business and management';
-        $coed = 'college of education';
-        $cet = 'college of engineering and technology';
-
         //check route
+         $departments = [];
         if(request()->route()->getName() == 'theses'){
             $theses = Theses::class;
-            $departments = [];
             $colleges = College::all();
             foreach($colleges as $college){
                 //append in departmens array
                 array_push($departments, $college->college);
             }
-
-        return view('theses', [
-            'theses' => $theses::with('authors')->latest()->get()->where('approved', 1),
-            'cas' => College::where('college', $cas)->get()->first(),
-            'cbm' => College::where('college', $cbm)->get()->first(),
-            'coed' => College::where('college', $coed)->get()->first(),
-            'cet' => College::where('college', $cet)->get()->first(),
-            'colleges' => College::all(),
-            'cbm_theses' => $theses::where('college_id', 2)->where('approved', 1)->get(),    
-            
-            'cas_theses' => $theses::where('college_id', 1)->where('approved', 1),
-
-            'coed_theses' => $theses::where('college_id', 4)->where('approved', 1)->get(),
-
-            'cet_theses' => $theses::where('college_id', 3)->where('approved', 1)->get(),
-
-            'recent_theses' => $theses::with('authors')->latest()->get()->where('approved', 1)->take(3),
-            'courses' => DB::table('courses')->get(),
-
-            //highest views
-            'highest_views' => DB::table('viewed_theses')->select('theses_id')->groupBy('theses_id')->orderByRaw('COUNT(*) DESC')->limit(3)->get(),
-
-            ]);
         }
+        $college = array();
         $colleges = College::all();
-        $colleges = $colleges->value('college');
-        return view('home', [
-            'theses' => $theses::with('authors')->latest()->get()->where('approved', 1),
-            'cas' => College::where('college', $cas)->get()->first(),
-            'cbm' => College::where('college', $cbm)->get()->first(),
-            'coed' => College::where('college', $coed)->get()->first(),
-            'cet' => College::where('college', $cet)->get()->first(),
-            'colleges' => College::get('college')->values(),
-            'cbm_theses' => $theses::where('college_id', 2)->where('approved', 1)->get(),    
-            
-            'cas_theses' => $theses::where('college_id', 1)->where('approved', 1),
+        foreach($colleges as $col){
+            $college[] = $col->college;
+        }
+        //caching theses per college
+        //get all the college -> get the id of the college -> get the count of theses per college -> store it in an theses_count array
+        cache()->remember('theses_college_counts', now()->addMinutes(1), function(){
+            $colleges = College::all();
+            $theses_count = array();
+            foreach($colleges as $college){
+                $college_theses = Theses::where('college_id', $college->id)->where('approved', 1)->get();
+                array_push($theses_count, $college_theses->count());
+            }
+            return $theses_count;
+        });
 
-            'coed_theses' => $theses::where('college_id', 4)->where('approved', 1)->get(),
+        //caching theses per course
+        //get all the course -> get the id of the course -> get the count of theses per course -> store it in an theses_count array
+  
+        cache()->remember('theses_course_counts', now()->addMinutes(1), function(){
+            $theses = Theses::all();
+            $theses_count = array();
+            $kurso = array();
+            $theses = Theses::join('courses', 'theses.course_id', '=', 'courses.id' )->where('approved', 1)->get();
+            $kurso = array();
+            foreach($theses as $thesis){
+                //check if the course already existing in kurso if false it push the course and count the number of thesis
+                if(in_array($thesis->course, $kurso) == false){
+                    array_push($kurso, $thesis->course);
+                    $theses_course = Theses::join('courses', 'theses.course_id', '=', 'courses.id')->where('course', $thesis->course)->where('approved', 1)->get();
+                                        array_push($theses_count, $theses_course->count());
+                    }
+                }
 
-            'cet_theses' => $theses::where('college_id', 3)->where('approved', 1)->get(),
+            return $theses_count;
+        });
 
-            'recent_theses' => $theses::with('authors')->latest()->get()->where('approved', 1)->take(3),
-            'courses' => DB::table('courses')->get(),
-
-            //highest views
-            'highest_views' => DB::table('viewed_theses')->select('theses_id')->groupBy('theses_id')->orderByRaw('COUNT(*) DESC')->limit(3)->get(),
-
-            ]);
-
+       
+        cache()->remember('courses', now()->addMinutes(1), function(){
+             $theses = Theses::join('courses', 'theses.course_id', '=', 'courses.id' )->where('approved', 1)->get();
+            $kurso = array();
+            foreach($theses as $thesis){
+                //check if the course already existing in kurso
+                if(in_array($thesis->course, $kurso) == false){
+                    array_push($kurso, $thesis->course);
+                }
+                
+            }
+            return $kurso;
+        });
           
+        
+        //caching theses per college
+        //get all the college -> get the id of the college -> get the count of years per college -> store it in an years_count array
+        $years = Year::all();
+        $taons = array();
+        foreach($years as $year){
+            $taons[] = $year->year;
+        }
+        cache()->remember('years_college_counts', now()->addMinutes(1), function(){
+            $years_count = array();
+            $years = Year::all();
+            foreach($years as $year){
+                $theses_years = Theses::where('year_id', $year->id)->where('approved', 1)->get('year_id');
+                array_push($years_count, $theses_years->count());
+            }
+            return $years_count;
+        });
 
+        cache()->remember('theses', now()->addMinutes(5), function() use ($theses){
+            return $theses::with('authors')->latest()->limit(3)->get()->where('approved', 1);
+        });
+
+        cache()->rememberForever('cas', function(){
+           return College::where('college', 'college of arts and sciences')->get()->first();
+        });
+
+        cache()->rememberForever('cbm', function(){
+            return College::where('college', 'college of business and management')->get()->first();
+         });
+
+         cache()->rememberForever('coed', function(){
+            return College::where('college', 'college of education')->get()->first();
+         });
+
+         cache()->rememberForever('cet', function(){
+            return College::where('college', 'college of engineering and technology')->get()->first();
+         });
+
+        
+        //for loop to cache
+        for($i = 0; $i < sizeOf($colleges); $i++){
+            if($colleges[$i]['id'] == 2){
+            cache()->remember('cbm_theses', now()->addMinutes(10),
+                function(){
+                    return Theses::where('college_id', 2)->where('approved', 1)->count();
+            });
+            
+        }else if($colleges[$i]['id'] == 1){
+            cache()->remember('cas_theses', now()->addMinutes(10),
+                function(){
+                    return Theses::where('college_id', 1)->where('approved', 1)->count();
+            });
+        }else if($colleges[$i]['id'] == 3){
+            cache()->remember('cet_theses', now()->addMinutes(10),
+                function(){
+                    return Theses::where('college_id', 3)->where('approved', 1)->count();
+            });
+        }else{
+                cache()->remember('coed_theses', now()->addMinutes(10),
+                    function(){
+                        return Theses::where('college_id', 4)->where('approved', 1)->count();
+                });
+        }
+        }
+        //end cache
+        return view('home', [
+            'theses' => Theses::all(),
+            'cas' => Cache::get('cas'),
+            'cbm' => Cache::get('cbm'),
+            'coed' => Cache::get('coed'),
+            'cet' => Cache::get('cet'),
+            'cbm_theses' => Cache::get('cbm_theses'),    
+            'cas_theses' => Cache::get('cas_theses'),
+            'coed_theses' => Cache::get('coed_theses'),
+            'cet_theses' => Cache::get('cet_theses'),
+            'colleges' => $college,
+            'courses' => Cache::get('courses'),
+            'course_count' => Cache::get('theses_course_counts'),
+            'years' => $taons,
+            'years_count' => Cache::get('years_college_counts'),
+            'counts' => Cache::get('theses_college_counts'),
+            'recent_theses' => Cache::get('theses'),
+            'highest_views' => DB::table('viewed_theses')->select('theses_id')->groupBy('theses_id')->orderByRaw('COUNT(*) DESC')->limit(3)->get(),
+            ]);
     }
 
     /**
@@ -114,28 +195,30 @@ class ThesesController extends Controller
     }
 
     public function categories($key)
-    {   
-        $theses = Theses::where('approved', 1)->get('course_id');
-        $courses = array();
-        $course_that_have_theses = array();
-        foreach($theses as $thesis){
-            array_push($courses, $thesis->course_id);
-        }
-        $course_count = array_count_values($courses);
+    {     
+        cache()->remember('highest_course', now()->addHours(1), function(){
+             //get all the course that have theses
+            $theses = Theses::where('approved', 1)->get('course_id');
+            $courses = array();
+            $course_that_have_theses = array();
+            foreach($theses as $thesis){
+                array_push($courses, $thesis->course_id);
+            }
+            $course_count = array_count_values($courses);
 
-        foreach($course_count as $keys => $value){
-            $course_count[$keys] = Course::where('id', $keys)->get()->first();
-            array_push($course_that_have_theses, $course_count[$keys]);
-        }
+            foreach($course_count as $keys => $value){
+                $course_count[$keys] = Course::where('id', $keys)->get()->first();
+                array_push($course_that_have_theses, $course_count[$keys]);
+            }
+            return $course_that_have_theses;
+        });
         return view('colleges', [
             'theses' => Theses::with('authors')->where('college_id', $key)->where('approved', 1)->get()->sortByDesc('year'),
             'college' => College::where('id', $key)->get()->first(),
             'years' => Year::all(),
             'program' => DB::table('courses')->where('course', $key)->get()->first(),
-            'courses' => $course_that_have_theses,
+            'courses' => Cache::get('highest_course'),
             'course' => Theses::with('course')->where('course_id', $key)->get(),
-            
-
         ]);
     }
 
@@ -147,19 +230,41 @@ class ThesesController extends Controller
         //     array_push($collage, $college->college);
         // 
         $user = Auth::user();
+        $courses = Course::where('college_id', $user->college_id)->get();
+        $count_theses_per_course = array();
+        $theses = $theses->where('college_id', $user->college_id)->get();
+
+        foreach($courses as $course){
+            $count_theses_per_course[] = Theses::where('course_id', $course->id)->count();
+        }
         return view('statistics', [
-            'theses' => $theses->where('college_id', $user->college_id)->get(),
+            'theses' => $theses,
             'college' => College::where('id', $user->college_id)->get(),
-            'IT' => Theses::where('course_id', 1)->get(),
-            'BACOM' => Theses::where('course_id', 10)->get(),
-            'MATH' => Theses::where('course_id', 13)->get(),
-            'GEO' => Theses::where('course_id', 12)->get(),
-            'BIO' => Theses::where('course_id', 11)->get(),
-            'COMSCI'=> Theses::where('course_id', 2)->get(),
+            'courses' => $courses,
+            'counts_of_theses' => $count_theses_per_course,
         ]);
     }
 
-    public function years($year)
+    public function cacheHighestCourse(){
+
+        cache()->remember('highest_course', now()->addHours(1), function(){
+            //get all the course that have theses
+           $theses = Theses::where('approved', 1)->get('course_id');
+           $courses = array();
+           $course_that_have_theses = array();
+           foreach($theses as $thesis){
+               array_push($courses, $thesis->course_id);
+           }
+           $course_count = array_count_values($courses);
+
+           foreach($course_count as $keys => $value){
+               $course_count[$keys] = Course::where('id', $keys)->get()->first();
+               array_push($course_that_have_theses, $course_count[$keys]);
+           }
+           return $course_that_have_theses;
+       });
+    }
+    public function years(Request $request)
     {   
         $theses = Theses::where('approved', 1)->get('course_id');
         $courses = array();
@@ -173,24 +278,110 @@ class ThesesController extends Controller
             $course_count[$key] = Course::where('id', $key)->get()->first();
             array_push($course_that_have_theses, $course_count[$key]);
         }
+        
+        $year = $request->year;
+        $college = $request->college;
+        if($request->college != null){
+            $theses = Theses::where('college_id', $college)->where('year_id', $year)->where('approved', 1)->get();
+            $key = $request->college;
+            return view('colleges', [
+                'taon' => Year::where('id', $year)->get()->first(),
+                'theses' => $theses,
+                'college' => College::find($college)->get()->first(),
+                'years' => Year::all(),
+                'courses' => $course_that_have_theses,
+                'key' => $key,
+            ]);
+        }elseif($request->course!= null){
+            return view('courses', [
+                'program' => Course::where('id', $request->course)->get()->first(),
+                'theses' => Theses::where('course_id', $request->course)->where('year_id', $request->year)->where('approved', 1)->get(),
+                'college' => College::all(),
+                'years' => Year::all(),
+                'courses' => Cache::get('highest_course'),
+                'year' => Year::where('id', $request->year)->get()->first(),
+            ]);
+        }else{
+            $term = $request->search;
+            $year = $request->year;
+            return view('browse-theses', [
+                'theses' => Theses::search($term)->where('year_id', $year)->where('approved', 1)->get(),
+                'college' => College::search($term)->get(),
+                'years' => Year::all(),
+                'courses' => $course_that_have_theses,
+                'programs' => Course::search($term)->get()->take(5),
+                'colleges' => College::all()->take(5),
+                'search' => $request->search,
+                'year' => Year::where('id', $year)->get()->first(),
+            ]);
+        }
 
-        return view('year', [
-            'taon' => Year::where('id', $year)->get()->first(),
-            'theses' => Theses::where('year_id', $year)->where('approved', 1)->get(),
-            'college' => College::all(),
-            'years' => Year::all(),
-            'courses' => $course_that_have_theses,
-        ]);
+        // return view('year', [
+        //     'taon' => Year::where('id', $year)->get()->first(),
+        //     'theses' => $theses,
+        //     'college' => College::all(),
+        //     'years' => Year::all(),
+        //     'courses' => $course_that_have_theses,
+        //     'key' => 'college='.$key,
+        // ]);
     }
 
-    public function courses($course)
-    {   
+    //function to show only the year user desired
+    function sortYear(Request $request){
+
+       
+       
+        $theses = Theses::where('approved', 1)->get('course_id');
+        $courses = array();
+        $course_that_have_theses = array();
+        foreach($theses as $thesis){
+            array_push($courses, $thesis->course_id);
+        }
+        $course_count = array_count_values($courses);
+        
+        foreach($course_count as $key => $value){
+            $course_count[$key] = Course::where('id', $key)->get()->first();
+            array_push($course_that_have_theses, $course_count[$key]);
+        }
+        
+        return view('browse-theses', [
+            'theses' => $theses,
+            'years' => Year::all(),
+            'courses' => $course_that_have_theses,
+            'college' => College::all(),
+            'programs' => Course::all()->take(5),
+            'colleges' => College::all()->take(5),
+            'key' => $request->college,
+
+        ]);
+
+
+    }
+
+    public function courses(Request $request)
+    {
+        cache()->remember('highest_course', now()->addHours(1), function(){
+            //get all the course that have theses
+           $theses = Theses::where('approved', 1)->get('course_id');
+           $courses = array();
+           $course_that_have_theses = array();
+           foreach($theses as $thesis){
+               array_push($courses, $thesis->course_id);
+           }
+           $course_count = array_count_values($courses);
+
+           foreach($course_count as $keys => $value){
+               $course_count[$keys] = Course::where('id', $keys)->get()->first();
+               array_push($course_that_have_theses, $course_count[$keys]);
+           }
+           return $course_that_have_theses;
+       });
         return view('courses', [
-            'course' => Course::where('id', $course)->get()->first(),
-            'theses' => Theses::where('course_id', $course)->where('approved', 1)->get(),
+            'program' => Course::where('id', $request->course)->get()->first(),
+            'theses' => Theses::where('course_id', $request->course)->where('approved', 1)->get(),
             'college' => College::all(),
             'years' => Year::all(),
-            'courses' => DB::table('courses')->get()->take(5),
+            'courses' => Cache::get('highest_course'),
         ]);
     }
 
@@ -264,7 +455,7 @@ class ThesesController extends Controller
             DB::table('authors')->updateOrInsert([
                 'author' => $author_id,
             ],[
-                'author' => $author_id,
+                'author' => $author_id, 'email' => $request->author_email[$key],
             ]);
             $getId = Authors::where('author', $author_id)->value('id');
             $theses_id[] = $getId;
@@ -296,12 +487,17 @@ class ThesesController extends Controller
         
         $term = $request->searchTitle;
         return view('browse-theses', [
-            'theses' => Theses::search($term)->where('approved', 1)->get(),
+            'theses' => Theses::join('years', 'theses.year_id', '=', 'years.id')
+            ->join('courses', 'theses.course_id', '=', 'courses.id')
+            ->join('colleges', 'theses.college_id', '=', 'colleges.id')
+            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('title', 'LIKE', '%'.$term.'%')->orWhere('course', 'LIKE', '%'.$term.'%')
+            ->get(),
             'college' => College::search($term)->get(),
             'years' => Year::all(),
             'courses' => $course_that_have_theses,
             'programs' => Course::search($term)->get()->take(5),
             'colleges' => College::all()->take(5),
+            'search' => $term,
         ]);
     }
 

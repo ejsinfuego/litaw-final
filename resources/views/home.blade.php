@@ -22,8 +22,8 @@
   <!-- Carousel wrapper -->
   <div class="relative h-56 overflow-hidden  md:h-96">
     <!-- Item 1 -->
-    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cas.jpg') }});">
-      <img src="{{ asset('/img/')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+    <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('img/cas.jpg') }});">
+      <img src="{{ asset('img/cas.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
     </div>
     <!-- Item 2 -->
     <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cbm1.jpg') }});">
@@ -92,40 +92,6 @@
     </div> 
     
 </div>
-
-
-
-  {{-- <main class="relative max-w-screen overflow-x-hidden" style="height: 480px;">
-    <div class="bg-cover bg-no-repeat bg-center md:h-full h-full" style="background-image: url({{ asset('/img/bg.jpg') }});">
-        <div class="absolute inset-0 bg-black opacity-60"></div>
-        <div class="container mx-auto md:h-96 flex flex-col items-center justify-center relative pt-14 md:pt-12 z-10">
-            <h1 class="text-2xl md:text-4xl font-regular text-white text-center px-8 md:px-35 pt-4">Discover Academic Excellence In Our University's Repository</h1>
-            <p class="text-md md:text-md font-light text-white text-center px-4 md:px-44 mb-1 my-4">Welcome to our digital repository, where knowledge meets innovation. Discover meticulously curated theses and academic works spanning various disciplines, harnessing the power of knowledge dissemination for generations to come.</p>
-            <div class="flex flex-col md:flex-row md:items-center mt-12">
-              <div class="relative">
-                <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700/50 dark:border-gray-600 dark:text-white">
-                  <option class="focus:bg-gray-50" selected>All colleges</option>
-                  <option class="" value="US">Arts and Science</option>
-                  <option class="" value="CA">Business and Management</option>
-                  <option class="" value="FR">Education</option>
-                  <option class="" value="DE">Engineering and Technology</option>
-                </select>
-              </div>
-              
-              <div class="relative w-full mt-3 md:mt-0 md:w-auto">
-                <form method="GET" action="search/{title}">
-                <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
-                <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                </form>
-                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-                  <span class="sr-only">Search</span>
-                </button>
-              </div>
-            </div>             
-        </div>
-    </div> --}}
 </main>
 
 <section class="py-8 md:text-base text-xs">
@@ -136,90 +102,85 @@
     <p class="text-center text-gray-600">Select colleges to browse thesis and academic works</p>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 md:px-20 px-0">
-      <a href="categories/{{$cas->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+      <a href="categories/{{$cas->id}}" class="bg-white college-container border px- py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content pt-8 flex flex-col items-center">
-          <div class="college-image w-36 md:w-44 justify-center">
-            <img src="{{ asset('/img/CAS-logo.png') }}" alt="CAS">
+          <div class="college-image justify-center px-5">
+            <img src="{{ asset('/img/CAS-logo.png') }}" alt="CAS" class="px-4">
           </div>
-          <h3 class="text-lg font-bold text-gray-700 pt-8 pb-2">Arts and Science</h3>
-          <p class="text-gray-600 college-description text-sm px-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;Produce globally competitive graduates equipped with high ethical standard of professionalism in the field of Arts and Sciences.</p> <!-- Added py-2 class for padding -->
+        </div>
+          <div class="college-content py-3">
+            <h3 class="text-lg font-bold text-gray-700 py-2 text-center">
+          Arts and Science</h3>
+          <p class="text-gray-600 college-description text-sm px-4 text-justify text-wrap">&nbsp;&nbsp;Produce globally competitive graduates equipped with high ethical standard of professionalism in the field of Arts and Sciences.</p> <!-- Added py-2 class for padding -->
         </div>
       </a>
       
 
       <a href="categories/{{$cbm->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content py-3 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
+          <div class="college-image justify-center">
           <img src="{{ asset('/img/cbm_logo_new.png')}}" alt="CBM">
         </div>
         </div>
         <div class="college-content py-3">
-          <h3 class="bg-white text-lg font-bold text-gray-700 py-2 text-center">Business and Management</h3>
-          <p class="text-gray-600 college-description text-sm px-2 text-justify">&nbsp;&nbsp;&nbsp;&nbsp;Produce globally competitive, value-laden professionals/entrepreneurs who can create social, environmental, and economic impact through research and community services.</p>
+          <h3 class="bg-white font-bold text-gray-700 py-2 text-center">Business and Management</h3>
+          <p class="text-sm text-gray-600 college-description px-2 text-justify text-wrap">&nbsp;&nbsp;Produce globally competitive, value-laden professionals or entrepreneurs who can create social, environmental, and economic impact through research and community services.</p>
         </div>
       </a>
       
 
       <a href="categories/{{$coed->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300 ">
         <div class="college-content py-1 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
+          <div class="college-image justify-center">
           <img src="{{ asset('/img/COED-logo.png') }}" alt="COED">
         </div>
         </div> 
         <div class="college-content py-2">
-          <h3 class="text-lg font-bold text-gray-700 py-2 text-center">Education</h3>
-          <p class="text-gray-600 college-description text-sm text-justify px-2">The College of Education shall be the center for training, research and extension programs in Teacher Education for effective, morally, socially, culturally and environmentally-responsible Teacher Education leaders committed to pursuing academic excellence.</p>
+          <h3 class="text-base font-bold text-gray-700 py-2 text-center">Education</h3>
+          <p class="text-gray-600 college-description text-sm text-justify px-2">&nbsp;&nbsp;The College of Education shall be the center for training, research and extension programs in Teacher Education for effective, morally, socially, culturally and environmentally-responsible Teacher Education leaders committed to pursuing academic excellence.</p>
         </div>
       </a>
       
       <a href="categories/{{$cet->id}}" class="bg-white college-container border px-4 py-4 shadow-md rounded-md hover:border hover:border-gray-300">
         <div class="college-content py-2 flex flex-col items-center">
-          <div class="college-image w-52 justify-center">
-          <img src="{{ asset('/img/CET-logo.png')}}"alt="CET">
+          <div class="college-image justify-center">
+          <img src="{{ asset('/img/CET-logo.png')}}"alt="CET" class="px-3">
         </div>
       </div> 
         <div class="college-content py-2">
           <h3 class="text-lg font-bold text-gray-700 py-2 text-center">Engineering and Technology</h3>
-          <p class="text-gray-600 college-description text-sm text-justify">A center for Engineering and Industrial Technology Education aimed at producing globally competitive graduates equipped with high ethical standards of professionalism</p>
+          <p class="text-gray-600 college-description text-sm text-justify">&nbsp;&nbsp;A center for Engineering and Industrial Technology Education aimed at producing globally competitive graduates equipped with high ethical standards of professionalism</p>
         </div>
       </a>
       </div>
     </div>
-  </div>
 </section>
-<div hidden>
-  <p>{{count($theses)}}</p>
-  <p id="coed">
-  {{$coed->college}}
-  </p>
-  <p id="cas">
-    {{$cas->college}}
-  </p>
-  <p id="cbm">
-    {{$cbm->college}}
-  </p>
-  <p id="cet">
-    {{$cet->college}}
-  </p>
 
-  <p id="casCount">{{$cas_theses->count()}}</p>
-  <p id="cbmCount">{{$cbm_theses->count()}}</p>
-  <p id="coedCount">{{$coed_theses->count()}}</p>
-  <p id="cetCount">{{$cet_theses->count()}}</p>
+ <div class="container flex flex-col mx-auto px-4 md:px-0 bg-white college-container border py-4 shadow-md rounded-md hover:border hover:border-gray-300">
+<div class="col-lg-2 h-auto md:w-1/2 mx-auto w-auto px-4 md:px-0 mb-5">
+  <canvas class="" id="myChart"></canvas>
+</div>
+<div class="col flex justify-center mt-5">
+<button onclick="perYear()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mx-2">
+  Change Category per Year
+</button>
+
+<button onclick="perCollege()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mx-2">
+  Change Category per College
+</button>
+<button onclick="perCourse()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mx-2">
+  Change Category per Course
+</button>
 </div>
 
-<div class="container md:w-1/4 mx-auto w-auto px-4 md:px-0">
-  <canvas id="myChart"></canvas>
 </div>
-
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    //show pop when hover
     
-
-
+    
   function popup(){
     let popup = document.getElementByClass('myPopup');
     popup.removeAttribute('hidden');
@@ -230,37 +191,164 @@
     popup.setAttribute('hidden', true);
   }
 
-  
   const ctx = document.getElementById('myChart');
-  let cas = document.getElementById('cas').textContent;
-  let coed = document.getElementById('coed').textContent;
-  let cet = document.getElementById('cet').textContent;
-  let cbm  = document.getElementById('cbm').textContent;
+  const colleges = @json($colleges);
 
-  let casCount = document.getElementById('casCount').textContent;
-  let cbmCount = document.getElementById('cbmCount').textContent;
-  let cetCount = document.getElementById('cetCount').textContent;
-  let coedCount = document.getElementById('coedCount').textContent;
-  
+  const counts = @json($counts);
 
 
-  new Chart(ctx, {
+  var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: [cas, cbm, coed, cet], // Our labels
+      labels: colleges, // Our labels
       datasets: [{
         label: 'Number of Theses We Have',
-        data: [casCount, cbmCount, coedCount, cetCount],
+        data: counts,
         backgroundColor: [
           'rgb(255, 99, 100)',
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
+          'rgb(23,114,69)',
+          'rgb(255, 205, 86)',
+          'rgb(54, 162, 235)'
           ],
-          hoverOffset: 4
+          hoverOffset: 10
       }]
     },
+    options : {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'left',
+          labels: {
+            font: {
+              weight: 500
+            },
+            padding: 5,
+           
+          }, 
+          fullSize: true,
+          padding: 5,
+        },
+        title : {
+          font:{
+             size: 20,
+             padding: 20,
+          },
+          display: true,
+          text: 'Visual Statistics of Theses'
+        },
+      subtitle : {
+        display: true,
+        text: 'Click the legend to hide or show the data. Hover on the chart to see the exact number of theses per category.'
+      }
+      },
+        
+      interaction: {
+        mode: 'point',
+      },
+      
+    }
   });
+
+  //show pop when hover
+  function perYear(){
+      const years_count = @json($years_count);
+      const years = @json($years);
+    
+
+      //update the chart
+      var newData = {
+        labels: years, // Our labels
+        datasets: [{
+          label: 'Number of Theses We Have',
+          data: years_count,
+          backgroundColor: [
+            'rgb(255, 99, 100)',
+            'rgb(23,114,69)',
+            'rgb(255, 205, 86)',
+            'rgb(54, 162, 235)'
+            ],
+            hoverOffset: 10
+        }]
+      };
+
+      myChart.data = newData;
+      myChart.update();
+    }
+
+    function perCollege(){
+      const colleges = @json($colleges);
+
+      const counts = @json($counts);
+  
+      const college = [];
+
+      //update the chart
+      var newData = {
+        labels: colleges, // Our labels
+        datasets: [{
+          label: 'Number of Theses We Have',
+          data: counts,
+          backgroundColor: [
+            'rgb(255, 99, 100)',
+            'rgb(23,114,69)',
+            'rgb(255, 205, 86)',
+            'rgb(54, 162, 235)'
+            ],
+            hoverOffset: 10
+        }]
+      };
+
+      myChart.data = newData;
+      myChart.update();
+    }
+
+    function perCourse(){
+      const courses = @json($courses);
+
+      const course_counts = @json($course_count);
+      console.log(courses);
+
+      //update the chart
+      var newData = {
+        labels: courses, // Our labels
+        datasets: [{
+          label: 'Number of Theses We Have',
+          data: course_counts,
+          backgroundColor: [
+          'rgb(255, 87, 51)',
+          'rgb(71, 209, 71)',
+          'rgb(255, 215, 0)',
+          'rgb(255, 105, 180)',
+          'rgb(0, 191, 255)',
+          'rgb(255, 165, 0)',
+          'rgb(255, 0, 0)',
+          'rgb(0, 0, 255)',
+          'rgb(255, 0, 255)',
+          'rgb(0, 255, 255)',
+          'rgb(0, 128, 0)',
+          'rgb(128, 0, 128)',
+          'rgb(128, 0, 0)',
+          'rgb(128, 128, 0)',
+          'rgb(0, 128, 128)',
+          'rgb(0, 0, 128)',
+          'rgb(128, 128, 128)',
+          'rgb(192, 192, 192)',
+          'rgb(255, 255, 255)',
+          'rgb(0, 0, 0)',
+          'rgb(255, 99, 100)',
+          'rgb(23,114,69)',
+          'rgb(255, 205, 86)',
+          'rgb(54, 162, 235)'
+          
+            ],
+            hoverOffset: 10
+        }]
+      };
+
+      myChart.data = newData;
+      myChart.update();
+    }
 </script>
 
   <div class="container md:mx-auto px-4">
@@ -396,63 +484,4 @@
 
 
 
-<footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
-  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-      <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="#" class="flex items-center mb-4 sm:mb-0">
-              <img src="/img/logo_footer.png" class="h-8 mr-3" alt="LITAW Logo" />
-          </a>
-          <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
-              </li>
-              <li>
-                  <a href="#" class="hover:underline">Contact</a>
-              </li>
-          </ul>
-      </div>
-      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
-  </div>
-</footer>
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-
-<!--navigation toggle and login modal-->
-<script>
-  function toggleLoginNavItem() {
-      var loginNavItem = document.getElementById("loginNavItem");
-      loginNavItem.classList.toggle("hidden");
-  }
-
-  function toggleLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.toggle('hidden');
-}
-
-  function hideLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.add('hidden');
-}
-
-</script>
-
-</body>
-</html>
+<x-footer></x-footer>

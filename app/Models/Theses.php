@@ -21,12 +21,9 @@ class Theses extends Model
         return [
             'title' => $this->title,
             'metakeys' => $this->metakeys,
-            'year_id' => $this->year_id,
         ];
     }
-
-
-
+    
      protected $fillable = [
         'title',
         'abstract',
@@ -61,11 +58,11 @@ class Theses extends Model
     }
 
     public function college(): BelongsTo {
-        return $this->belongsTo(College::class);
+        return $this->belongsTo(College::class, 'college_id');
     }
 
     public function year(): BelongsTo {
-        return $this->belongsTo(Year::class);
+        return $this->belongsTo(Year::class, 'year_id');
     }
 
     public function views(): HasMany {

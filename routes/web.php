@@ -22,7 +22,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 Route::get('/', [ThesesController::class, 'index', 'navBar'])->name('dashboard');
 Route::get('search/{title}', [ThesesController::class, 'search']);
 Route::get('/theses', [ThesesController::class, 'index'])->name('theses');
-
+Route::get('/search/year/', [ThesesController::class, 'sortYear'])->name('sortYear');
 
 Route::middleware([
     'auth:sanctum',
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'verified', 'role:contentModerator|admin'])->name('mo
     Route::get('/approve/{theses}', [ModeratorController::class, 'approve'])->name('approve');
     Route::get('/reject/{theses}', [ModeratorController::class, 'reject'])->name('reject');
     Route::get('/users', [ModeratorController::class, 'users'])->name('users');
-    Route::get('/ban/{user}', [RolesController::class, 'ban'])->name('ban');
+    Route::patch('/{user}/ban', [RolesController::class, 'ban'])->name('ban');
     Route::get('/unban/{user}', [RolesController::class,'unban'])->name('unban');
     Route::get('/stats', [ThesesController::class, 'stats'])->name('stats');
 });
@@ -69,7 +69,7 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('logout');
 
-Route::get('year/{year}', [ThesesController::class, 'years']);
+Route::get('year/', [ThesesController::class, 'years'])->name('years');
 Route::get('course/{course}', [ThesesController::class, 'courses'])->name('course');
 Route::get('view/{theses}', [ThesesController::class, 'singleThesis'])->name('view-thesis');
 Route::get('categories/{key}', [ThesesController::class, 'categories'])->name('categories');

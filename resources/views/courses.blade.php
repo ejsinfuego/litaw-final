@@ -1,7 +1,11 @@
 <x-nav-bar></x-nav-bar>
 <div class="flex items-center justify-between md:ml-24 ml-6 mt-12">
 <h1 class="inline text-3xl font-semibold text-gray-700">Browse Resources from <strong>
-    {{$course->course}}
+    {{$program->course}}
+    @if(request()->route()->getName() == 'years')
+    <span> on </span>
+    {{$year->year}}
+    @endif
 </strong></h1>
 </div>
 
@@ -58,7 +62,7 @@
         <a href='../view/{{$thesis->id}}' class="text-gray-600 font-medium text-md">{{ $thesis->title}}</a>
         <p class="text-gray-600 text-sm mt-1"><em>Author(s): 
         @foreach ($thesis->authors as $author )
-        {{$author->name}}
+        {{$author->author}}
         @endforeach | Year: {{$thesis->year->year}} | Course: {{Str::title($thesis->course->course)}}</em></p>
       </li>
         @endforeach
@@ -68,31 +72,6 @@
     </ul>
   </div>
 
-  {{-- <div class="join col-span-12 py-1 flex justify-center mt-4">
-    <ul class="flex justify-center md:justify-start text-sm mt-2 md:mt-0">
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-      </li>
-      <li>
-        <a href="#" aria-current="page" class="flex items-center justify-center px-2 md:px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-      </li>
-    </ul>
-  </div> --}}
 </div>
 
 <div class="lg:col-span-3 bg-gray-100 md:border p-4">
@@ -103,7 +82,7 @@
     @if($years->isNotEmpty())
     @foreach ($years as $year)
       <li>
-      <a href='\year/{{$year->id}}' class="text-gray-600 text-md hover:underline">{{$year->year}}</a>
+      <a href='{{route('years', ['course='.$program->id ,'year='.$year->id])}}' class="text-gray-600 text-md hover:underline">{{$year->year}}</a>
     </li>
     @endforeach
     </ul>  
@@ -126,57 +105,4 @@
 </div>
 
 
-<footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
-  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-      <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="#" class="flex items-center mb-4 sm:mb-0">
-              <img src="{{asset('img/logo_footer.png')}}" class="h-8 mr-3" alt="LITAW Logo" />
-              <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">LITAW</span>
-          </a>
-          <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
-              </li>
-              <li>
-                  <a href="#" class="hover:underline">Contact</a>
-              </li>
-          </ul>
-      </div>
-      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
-  </div>
-</footer>
-
-
-
-
-
-<!--navigation toggle and login modal-->
-<script>
-  function toggleLoginNavItem() {
-      var loginNavItem = document.getElementById("loginNavItem");
-      loginNavItem.classList.toggle("hidden");
-  }
-
-  function toggleLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.toggle('hidden');
-  }
-
-  function hideLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.add('hidden');
-  }
-  </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-
-
-</body>
-</html>
+<x-footer></x-footer>

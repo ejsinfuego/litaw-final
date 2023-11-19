@@ -1,6 +1,7 @@
 <x-nav-bar></x-nav-bar>
 
 
+
 <div id="loginModal" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="relative w-full max-w-md max-h-full">
@@ -21,12 +22,10 @@
                 <input type="email" name="email" id="email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Email" required 
               class="block mt-1 w-full" :value="old('email')" required autofocus autocomplete="username" />
             </div>
-
             <div class="relative z-0 w-full mb-6 group">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <input type="password" name="password" id="floating_password"  name="password" required autocomplete="current-password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="password" required/>
             </div>
-
             <div class="flex items-center justify-between mb-6">
              <div class="flex items-center">
                 <label for="remember_me" class="flex items-center">
@@ -53,9 +52,32 @@
                     </a>
                 </x-button>
                 <div class="flex items-center justify-center mt-2">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Not Registered? <a href="" class="text-blue-600 dark:text-blue-500 hover:underline">Create Account</a></p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Not Registered? <a href="{{ route('register')}}" class="text-blue-600 dark:text-blue-500 hover:underline">Create Account</a></p>
                   </div> 
                 </form>
 </div>
+  
 
+<script>
+    function toggleLoginModal() {
+  const modal = document.getElementById('loginModal');
+  modal.classList.toggle('hidden');
+}
+
+  function hideLoginModal() {
+  const modal = document.getElementById('loginModal');
+  modal.classList.add('hidden');
+}
+  function toggleSignUpForm() {
+    const signUpForm = document.getElementById('studentSignUpForm');
+    hideLoginModal();
+    signUpForm.classList.toggle('hidden');
+  }
+  function guestModal(){
+    const guest = document.getElementById('guestModal');
+    guest.classList.toggle('hidden')
+  }
+
+
+</script>
 

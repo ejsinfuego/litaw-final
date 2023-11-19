@@ -15,7 +15,7 @@
                         </p>
                     @endhasrole
                     <p class="text-gray-600 text-md mt-0 mb-4">Author(s): @foreach ($theses->authors as $author )
-                    <strong>{{$author->author}}</strong> |    
+                    <strong>{{$author->author}}</strong> <i><small>{{$author->email ?? 'contact info available'}}</small></i> |    
                     @endforeach</p>
                     <p class="text-gray-400 text-sm mb-4">Year Published: {{$theses->year->year}}</p>
                     <p class="text-gray-400 text-sm mb-4">Date Upload: {{date('M d, Y',strtotime($theses->created_at))}}</p>

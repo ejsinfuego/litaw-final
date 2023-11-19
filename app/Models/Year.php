@@ -16,7 +16,7 @@ class Year extends Model
     public function toSearchableArray()
     {
         return [
-            'year' => $this->name,
+            'year' => $this->year,
         ];
     }
 

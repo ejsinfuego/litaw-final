@@ -37,63 +37,37 @@
     </div>
     
     </div>
-    <div hidden>
-    <p id="it">
-        {{$IT->count()}}
-        </p>
-        <p id="bacom">
-          {{$BACOM->count()}}
-        </p>
-        <p id="math">
-          {{$MATH->count()}}
-        </p>
-        <p id="geo">
-          {{$GEO->count()}}
-        </p>
-        <p id="bio">
-        {{$BIO->count()}}
-        </p>
-        <p id="comsci">
-          {{$COMSCI->count()}}
-        </p>
-    </div>
-   
     
-    
-     
-     
-  
-    </div>
-   
-<div class="p-3 rounded-lg border border-gray-200 shadow-md justify-content-center">
-<div class="p-9 rounded-lg border border-gray-200 shadow-md justify-content-center">
+  </div>
+<div class="p-9 rounded-lg border border-gray-200 shadow-md justify-content-center flex">
 <section class="py-8 w-max">
   <div>
     <h3>Total Number of Theses Currently Submitted
     </h3>
     <p class="text-center">  (by your College)</p>
-    <canvas id="myChart"></canvas> 
+    <canvas id="myChart" style="flex flex-row"></canvas> 
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <script>
-    const it = {{$IT->count()}};
-    const bacom = {{$BACOM->count()}};
-    const math = {{$MATH->count()}};
-    const geo = {{$GEO->count()}};
-    const bio = {{$BIO->count()}};
-    const comsci = {{$COMSCI->count()}};
+
+    const courses = @json($courses);
+    const counts = @json($counts_of_theses);
+
     const ctx = document.getElementById('myChart');
+
+    const programs = courses.map(course => course.course);
+
   
     new Chart(ctx, {
     type: 'pie',
     data: {
       
-      labels: ['Bachelor of Science in Information Technology', 'Bachelor of Science in Computer Science', 'Bachelor of Science in Math', 'Bachelor of Arts in Communication', 'Bachelor of Science in Geology', 'Bachelor of Science in Biology'], // Our labels
+      labels: programs, // Our labels
       datasets: [{
         label: 'Number of Theses We Have',
-        data: [it, comsci, math, bacom, geo, bio],
+        data: counts,
         backgroundColor: [
           'rgb(255, 99, 100)',
           'rgb(255, 99, 132)',
@@ -109,42 +83,9 @@
    
 </section>
 </div>
-
 </div>
 
 
-
-<footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
-  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-      <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="#" class="flex items-center mb-4 sm:mb-0">
-              <img src="/img/logo_footer.png" class="h-8 mr-3" alt="LITAW Logo" />
-          </a>
-          <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
-              </li>
-              <li>
-                  <a href="#" class="hover:underline">Contact</a>
-              </li>
-          </ul>
-      </div>
-      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
-  </div>
-</footer>
-
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 
 <!--navigation toggle and login modal-->
 <script>
@@ -198,5 +139,4 @@
 
 </script>
 
-</body>
-</html>
+<x-footer></x-footer>

@@ -40,14 +40,20 @@ class RolesController extends Controller
         //
     }
 
-    public function ban(User $user)
-    {
+    public function ban(User $user, Request $request)
+    {   
+         
+        $request->validate([
+            'reason' => 'required|string|max:255',
+        ]);
+        User::where('id', $user->id)->update(['ban' => $request->reason]);
+
         $user->removeRole('registeredUser');
         return redirect(route('moderator.users'));
     }
 
     public function unban(User $user)
-    {
+    {  
         $user->assignRole('registeredUser');
         return redirect(route('moderator.users'));
     }

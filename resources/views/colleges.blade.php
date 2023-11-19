@@ -5,10 +5,9 @@
   
 <div class="flex items-center justify-between md:ml-24 ml-6 mt-12">
 <h1 class="inline text-3xl font-semibold text-gray-700">Browse Resources from <strong>
-  @if($college!=null)
      {{$college->college}}
-  @else
-    {{$taon->year}}
+      @if(request()->route()->getName() == 'years')
+  on {{$taon->year}}
   @endif
 </strong></h1>
 </div>
@@ -73,35 +72,14 @@
         </em></p>
       </li>
         @endforeach
+     @else
+     <li class="py-2 border-b border-gray-400 thesis">
+      <a class="text-gray-600 font-medium text-md title">Sorry, it seems like we don't have resource for that yet.</a>
+    </li>
      @endif
     </ul>
   </div>
 
-  {{-- <div class="join col-span-12 py-1 flex justify-center mt-4">
-    <ul class="flex justify-center md:justify-start text-sm mt-2 md:mt-0">
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-      </li>
-      <li>
-        <a href="#" aria-current="page" class="flex items-center justify-center px-2 md:px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center justify-center px-2 md:px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-      </li>
-    </ul>
-  </div> --}}
 </div>
 
 <div class="lg:col-span-3 bg-gray-100 md:border p-4">
@@ -112,7 +90,7 @@
     @if($years->isNotEmpty())
     @foreach ($years as $year)
       <li>
-      <a href='\year/{{$year->id}}' class="text-gray-600 text-md hover:underline">{{$year->year}}</a>
+      <a href="{{route('years', ['college='.$college->id ,'year='.$year->id]) }}" class="text-gray-600 text-md hover:underline">{{$year->year}}</a>
     </li>
     @endforeach
     </ul>  

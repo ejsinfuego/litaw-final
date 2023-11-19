@@ -14,12 +14,13 @@ class Authors extends Model
     public function toSearchableArray()
     {
         return [
-            'name' => $this->name,
+            'author' => $this->name,
         ];
     }
 
     protected $fillable = [
-        'name'
+        'author',
+        'email',
        
     ];
 

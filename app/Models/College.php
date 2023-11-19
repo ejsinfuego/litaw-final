@@ -21,7 +21,7 @@ class College extends Model
     }
 
     protected $fillable = [
-        'name'
+        'college'
        
     ];
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('interactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('theses_id')->references('id')->on('theses');
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('theses_id');
+            $table->foreignId('user_id');
             $table->string('comment')->constrained()->cascadeOnDelete();
             $table->integer('likes');
             $table->timestamps();

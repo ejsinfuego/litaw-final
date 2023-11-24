@@ -5,37 +5,67 @@
   
 <div class="flex items-center justify-between md:ml-24 ml-6 mt-12">
 <h1 class="inline text-3xl font-semibold text-gray-700">Browse Resources from <strong>
-     {{$college->college}}
-      @if(request()->route()->getName() == 'years')
+  {{$college->college}}
+  @if(request()->route()->getName() == 'years' and $taon != null)
   on {{$taon->year}}
+  @php
+    $year_id = $taon->id;
+  @endphp
+  @else
+  @php
+  $year_id = '';
+  @endphp
   @endif
 </strong></h1>
 </div>
 
 <div class="flex flex-col md:flex-row items-center justify-between ml-4 mr-4 mt-4 md:ml-24 lg:mr-24">
   <div class="flex md:flex-row  md:space-y-0 md:space-x-4 space-x-2">
-    <div>
-      <select id="filter" class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4" >
-        <option value="relevance">Sort by: Relevance</option>
-        <option value="title">Recent</option>
-        <option value="title">Oldest</option>
-        <option value="title">Most Viewed</option>
-        <option value="title">Most Cited</option>
-        <option value="title">Title A-Z</option>
-        <option value="year">Year</option>
-    </select>
-    </div>
 
-    <div>
-      <select id="orderType" class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
-        <option value="desc">Descending</option>
-        <option value="asc">Ascending</option>
-    </select>
-    </div>
+
+    <!-- component -->
+<style>
+  .dropdown:hover > .dropdown-content {
+    display: block;
+  }
+  </style>
+  
+  <div class="dropdown inline-block relative">
+    <button class="bg-gray-100 border border-gray-300 text-gray-700 font-semibold py-1 px-4 rounded inline-flex items-center">
+      <span>Sort by: </span>
+    </button>
+    <ul class="dropdown-content border bg-gray-200 border-gray-300 rounded-lg absolute hidden text-gray-700 pt-1">
+          <li class="dropdown">
+            <a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Year
+            <i class="ml-2 fa fa-arrow-right"></i>
+
+            </a>
+              <ul class="dropdown-content absolute hidden text-gray-700 pl-5 ml-14 -mt-10 rounded-lg">
+                <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', ["cat=year","college=".$college->id, "ascOrDesc=asc", "year=".$year_id])}}">Ascending</a>
+                  <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', ["cat=year", "college=".$college->id, "ascOrDesc=desc", "year=".$year_id])}}">Descending</a>
+              </ul>
+          </li>
+      <li class="dropdown">
+        <a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Title
+          <i class="ml-2 fa fa-arrow-right"></i>
+
+        </a>
+        
+          <ul class="dropdown-content absolute hidden text-gray-700 pl-5 ml-14 -mt-10 rounded-lg">
+            <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', ["college=".$college->id,"cat=title", "ascOrDesc=asc", 'year='.$year_id])}}">Ascending</a>
+              <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', ["college=".$college->id,"cat=title", "ascOrDesc=asc", "year=".$year_id])}}">Descending</a>
+          </ul>
+      </li>
+    </ul>
+  </div>
+
+
+      
+    
   </div>
 
   <div class="search-bar-container py-4 mt-4 md:mt-0 flex">
-    <form method="GET" action="\search/{title}">
+    <form method="GET" action="{{ route('search')}}">
     <div class="flex">
       
       <input type="text" name="searchTitle" class="search-bar px-4 w-96 rounded-l-md border-gray-400 focus:ring-0 focus:border-gray-600 border py-1 px-4" placeholder="Search">
@@ -57,6 +87,7 @@
     <ul class="space-y-4">
       @if($theses->isNotEmpty())
         @foreach ($theses as $thesis)
+        <div class="thesis-container">
         <li class="py-2 border-b border-gray-400 thesis">
         <a href='../view/{{$thesis->id}}' class="text-gray-600 font-medium text-md title">{{ $thesis->title}}</a>
         <br>
@@ -65,12 +96,13 @@
         {{$author->author}}
         @endforeach | Year: </em></p>
         <p class="text-gray-600 text-sm mt-1 inline year"><em>
-        {{$thesis->year->year}}
+        {{$thesis->year}}
         </em></p>
         <p class="text-gray-600 text-sm mt-1 inline"><em>
-         | Course: {{Str::title($thesis->course->course)}}
+         | Course: {{Str::title($thesis->course)}}
         </em></p>
       </li>
+      </div>
         @endforeach
      @else
      <li class="py-2 border-b border-gray-400 thesis">
@@ -84,7 +116,7 @@
 
 <div class="lg:col-span-3 bg-gray-100 md:border p-4">
   <div>
-    <h2 class="text-lg font-semibold text-gray-600 mb-2">Year</h2>
+    <h2 class="text-base font-semibold text-gray-600 mb-2">Filter</h2>
     <hr class="border-gray-300">
     <ul class="space-y-4 mt-2">
     @if($years->isNotEmpty())
@@ -95,18 +127,16 @@
     @endforeach
     </ul>  
     @endif
-    <h2 class="text-lg font-semibold text-gray-600 mt-4 mb-2">Courses</h2>
+    <h2 class="text-base font-semibold text-gray-600 mt-4 mb-2">Check programs that has highest contributions</h2>
     <hr class="border-gray-300"> 
-    <ul class="space-y-4 mt-2">
+    <ul class="space-y-4 mt-2 text-base">
       @foreach ($courses as $course)
       <li>
-        <a href="\course/{{$course->id}}" class="text-gray-600 text-md hover:underline">{{Str::title($course->course)}}</a>
+        <a href="\course/{{$course->id}}" class="text-gray-600 text-base hover:underline">{{Str::title($course->course)}}</a>
       </li>
       @endforeach
     </ul>
 
-
-    <h2 class="text-lg font-semibold text-gray-600 mt-4 mb-2">Author</h2>
     
   </div>
 </div>

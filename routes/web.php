@@ -20,7 +20,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 */
 
 Route::get('/', [ThesesController::class, 'index', 'navBar'])->name('dashboard');
-Route::get('search/{title}', [ThesesController::class, 'search']);
+Route::get('search/', [ThesesController::class, 'search'])->name('search');
 Route::get('/theses', [ThesesController::class, 'index'])->name('theses');
 Route::get('/search/year/', [ThesesController::class, 'sortYear'])->name('sortYear');
 
@@ -72,5 +72,5 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::get('year/', [ThesesController::class, 'years'])->name('years');
 Route::get('course/{course}', [ThesesController::class, 'courses'])->name('course');
 Route::get('view/{theses}', [ThesesController::class, 'singleThesis'])->name('view-thesis');
-Route::get('categories/{key}', [ThesesController::class, 'categories'])->name('categories');
+Route::get('categories/{term}', [ThesesController::class, 'categories'])->name('categories');
 Route::get('/data', [ThesesController::class, 'data'])->name('visualize');

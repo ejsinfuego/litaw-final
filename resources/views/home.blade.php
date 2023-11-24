@@ -68,18 +68,19 @@
 </div>
   <div class="container mx-auto md:px-20 px-10">
     <div class="flex flex-col justify-center md:flex-row md:items-center mt-12">
-      <div class="relative">
-        <select id="default" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
-          <option class="focus:bg-gray-50 placeholder-gray-500" selected>All colleges</option>
-          <option class="" value="US">Arts and Science</option>
-          <option class="" value="CA">Business and Management</option>
-          <option class="" value="FR">Education</option>
-          <option class="" value="DE">Engineering and Technology</option>
+      <div class="relative">  
+        <form method="GET" action=" {{ route('search')}}">
+        <select id="default" name="college" class="w-full md:w-48 py-2.5 px-2 text-sm font-medium text-gray-900  block w-40 p-2.5 border border-gray-300 md:rounded-l-md border border-gray-300 focus:ring-gray-500 focus:border-gray-500 placeholder-gray-500">
+          <option class="focus:bg-gray-50 placeholder-gray-500" value="" selected>All colleges</option>
+          <option class="" value="1">Arts and Science</option>
+          <option class="" value="2">Business and Management</option>
+          <option class="" value="4">Education</option>
+          <option class="" value="3">Engineering and Technology</option>
         </select>
       </div>
       
       <div class="relative mt-3 md:mt-0 md:w-auto">
-        <form method="GET" action="search/{title}">
+      
         <x-input name="searchTitle" placeholder="{{ $placeholder = 'Search'}}" type="search" id="search-dropdown" required></x-input>
         <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 md:rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         </form>

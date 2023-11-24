@@ -110,7 +110,7 @@ class ThesesController extends Controller
         });
 
         cache()->remember('theses', now()->addMinutes(5), function() use ($theses){
-            return $theses::with('authors')->latest()->limit(3)->get()->where('approved', 1);
+            return $theses::with('authors')->latest()->limit(4)->get()->where('approved', 1);
         });
 
         cache()->rememberForever('cas', function(){
@@ -194,7 +194,7 @@ class ThesesController extends Controller
         ]);
     }
 
-    public function categories($key)
+    public function categories($term, Request $request)
     {     
         cache()->remember('highest_course', now()->addHours(1), function(){
              //get all the course that have theses
@@ -212,16 +212,56 @@ class ThesesController extends Controller
             }
             return $course_that_have_theses;
         });
-        return view('colleges', [
-            'theses' => Theses::with('authors')->where('college_id', $key)->where('approved', 1)->get()->sortByDesc('year'),
-            'college' => College::where('id', $key)->get()->first(),
-            'years' => Year::all(),
-            'program' => DB::table('courses')->where('course', $key)->get()->first(),
-            'courses' => Cache::get('highest_course'),
-            'course' => Theses::with('course')->where('course_id', $key)->get(),
-        ]);
-    }
+        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                        ->join('courses', 'theses.course_id', '=', 'courses.id')
+                        ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                        ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $term)->where('approved', 1)->where('metakeys', 'LIKE', '%'.$term.'%')
+                        ->orderBy('year', 'desc')
+                        ->get();
+        if($request->cat == "year"){
+                if($request->ascOrDesc === "desc"){
+                        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                        ->join('courses', 'theses.course_id', '=', 'courses.id')
+                        ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                        ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $term)
+                        ->orderBy('year', 'desc')
+                        ->get();
+                    }else{
+                        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                        ->join('courses', 'theses.course_id', '=', 'courses.id')
+                        ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                        ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $term)->where('approved', 1)
+                        ->orderBy('year', 'asc')
+                        ->get();
+                    }
+        }else{
+            if($request->ascOrDesc == "desc"){
+                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                ->join('courses', 'theses.course_id', '=', 'courses.id')
+                ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $term)->where('approved', 1)
+                ->orderBy('title', 'desc')
+                ->get();
+                }else{
+                    $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $term)->where('approved', 1)
+                    ->orderBy('title', 'asc')
+                    ->get();
+                }
+        }
 
+        return view('colleges', [
+            'theses' => $theses,
+            'college' => College::where('id', $term)->get()->first(),
+            'years' => Year::all(),
+            'courses' => Cache::get('highest_course'),
+            'programs' => Course::search($term)->get()->take(5),
+            'colleges' => College::all()->take(5),
+        ]);
+  
+    }
     public function stats(Theses $theses, User $user)
     {   
         // $collage = array();
@@ -245,8 +285,9 @@ class ThesesController extends Controller
         ]);
     }
 
-    public function cacheHighestCourse(){
 
+    public function years(Request $request)
+    {   
         cache()->remember('highest_course', now()->addHours(1), function(){
             //get all the course that have theses
            $theses = Theses::where('approved', 1)->get('course_id');
@@ -263,58 +304,199 @@ class ThesesController extends Controller
            }
            return $course_that_have_theses;
        });
-    }
-    public function years(Request $request)
-    {   
-        $theses = Theses::where('approved', 1)->get('course_id');
-        $courses = array();
-        $course_that_have_theses = array();
-        foreach($theses as $thesis){
-            array_push($courses, $thesis->course_id);
-        }
-        $course_count = array_count_values($courses);
-        
-        foreach($course_count as $key => $value){
-            $course_count[$key] = Course::where('id', $key)->get()->first();
-            array_push($course_that_have_theses, $course_count[$key]);
-        }
-        
-        $year = $request->year;
-        $college = $request->college;
+        $year = $request->year ?? '';
+        $col =  '';
+        $college = $request->college ?? '';
+        $program = '';
+        $term = $request->search;
         if($request->college != null){
-            $theses = Theses::where('college_id', $college)->where('year_id', $year)->where('approved', 1)->get();
-            $key = $request->college;
-            return view('colleges', [
-                'taon' => Year::where('id', $year)->get()->first(),
-                'theses' => $theses,
-                'college' => College::find($college)->get()->first(),
-                'years' => Year::all(),
-                'courses' => $course_that_have_theses,
-                'key' => $key,
-            ]);
-        }elseif($request->course!= null){
+            $coll = Course::where('id', $request->college)->get()->first();
+
+                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)->where('approved', 1)
+                    ->orderBy('year', 'desc')
+                    ->get();
+                if($request->year != null){
+                        if($request->cat != null){
+                            if($request->ascOrDesc != null){
+                                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                                ->join('courses', 'theses.course_id', '=', 'courses.id')
+                                ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                                ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)
+                                ->where("years.id", $request->year)
+                                ->orderBy($request->cat, $request->ascOrDesc)
+                                ->get();
+                            }else{
+                                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                                ->join('courses', 'theses.course_id', '=', 'courses.id')
+                                ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                                ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)->where('approved', 1)
+                                ->where('years.id', $request->year)
+                                ->orderBy('year', 'desc')
+                                ->get();
+                            }
+                        }else{
+                            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                                ->join('courses', 'theses.course_id', '=', 'courses.id')
+                                ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                                ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)
+                                ->where("years.id", $request->year)
+                                ->get();
+                        }
+                }else{
+                    if($request->cat != null){
+                        if($request->ascOrDesc != null){
+                            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                            ->join('courses', 'theses.course_id', '=', 'courses.id')
+                            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)
+                            ->orderBy($request->cat, $request->ascOrDesc)
+                            ->get();
+                        }else{
+                            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                            ->join('courses', 'theses.course_id', '=', 'courses.id')
+                            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)->where('approved', 1)
+                            ->orderBy('year', 'desc')
+                            ->get();
+                        }
+                    }
+                }
+                return view('colleges', [
+                    'theses' => $theses,
+                    'college' => College::where('id', $request->college)->get()->first(),
+                    'years' => Year::all(),
+                    'courses' => Cache::get('highest_course'),
+                    'programs' => Course::search($term)->get()->take(5),
+                    'colleges' => College::all()->take(5),
+                    'taon' => Year::where('id', $year)->get()->first(),
+                ]);
+          
+        }elseif($request->course != null){
+            $program = Course::where('id', $request->course)->get()->first();
+
+            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                ->join('courses', 'theses.course_id', '=', 'courses.id')
+                ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)->where('approved', 1)
+                ->orderBy('year', 'desc')
+                ->get();
+            if($request->year != null){
+                    if($request->cat != null){
+                        if($request->ascOrDesc != null){
+                            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                            ->join('courses', 'theses.course_id', '=', 'courses.id')
+                            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)
+                            ->where("years.id", $request->year)
+                            ->orderBy($request->cat, $request->ascOrDesc)
+                            ->get();
+                        }else{
+                            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                            ->join('courses', 'theses.course_id', '=', 'courses.id')
+                            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)->where('approved', 1)
+                            ->where('years.id', $request->year)
+                            ->orderBy('year', 'desc')
+                            ->get();
+                        }
+                    }else{
+                        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                            ->join('courses', 'theses.course_id', '=', 'courses.id')
+                            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)
+                            ->where("years.id", $request->year)
+                            ->get();
+                    }
+            }else{
+                if($request->cat != null){
+                    if($request->ascOrDesc != null){
+                        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                        ->join('courses', 'theses.course_id', '=', 'courses.id')
+                        ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                        ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)
+                        ->orderBy($request->cat, $request->ascOrDesc)
+                        ->get();
+                    }else{
+                        $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                        ->join('courses', 'theses.course_id', '=', 'courses.id')
+                        ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                        ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)->where('approved', 1)
+                        ->orderBy('year', 'desc')
+                        ->get();
+                    }
+                }
+            }
             return view('courses', [
-                'program' => Course::where('id', $request->course)->get()->first(),
-                'theses' => Theses::where('course_id', $request->course)->where('year_id', $request->year)->where('approved', 1)->get(),
-                'college' => College::all(),
+                'theses' => $theses,
+                'college' => $col,
                 'years' => Year::all(),
+                'program' => $program,
                 'courses' => Cache::get('highest_course'),
-                'year' => Year::where('id', $request->year)->get()->first(),
-            ]);
-        }else{
-            $term = $request->search;
-            $year = $request->year;
-            return view('browse-theses', [
-                'theses' => Theses::search($term)->where('year_id', $year)->where('approved', 1)->get(),
-                'college' => College::search($term)->get(),
-                'years' => Year::all(),
-                'courses' => $course_that_have_theses,
-                'programs' => Course::search($term)->get()->take(5),
                 'colleges' => College::all()->take(5),
                 'search' => $request->search,
                 'year' => Year::where('id', $year)->get()->first(),
             ]);
-        }
+
+        }else{
+            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+            ->join('courses', 'theses.course_id', '=', 'courses.id')
+            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')
+            ->where('approved', 1)
+            ->where('metakeys', 'LIKE', '%'.$request->search.'%')
+            ->where('title', 'LIKE', '%'.$request->search.'%')
+            ->orderBy('year', 'desc')
+            ->get();
+            if($request->year != null){
+                if($request->cat != null){
+                if($request->ascOrDesc != null){
+                    $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges', 'theses.college_id', '=', 'colleges.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('years.id', $request->year)->orWhere('title', 'LIKE', '%['.$term.']%')->where('approved', 1)->Where('course', 'LIKE', '%'.$term.'%')->where('metakeys', 'LIKE', '%'.$term.'%')
+                    ->orderBy($request->cat, $request->ascOrDesc)
+                    ->get();
+                }else{
+                    $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges', 'theses.college_id', '=', 'colleges.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('years.id', $request->year)->orWhere('title', 'LIKE', '%['.$term.']%')->where('approved', 1)->Where('course', 'LIKE', '%'.$term.'%')->where('metakeys', 'LIKE', '%'.$term.'%')
+                    ->orderBy($request->cat, 'desc')
+                    ->get();
+                }
+            }else{
+                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges', 'theses.college_id', '=', 'colleges.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('years.id', $request->year)->orWhere('title', 'LIKE', '%['.$term.']%')->where('approved', 1)->Where('course', 'LIKE', '%'.$term.'%')->where('metakeys', 'LIKE', '%'.$term.'%')
+                    ->get();
+            }
+        }else{
+                $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')
+                    ->where('approved', 1)
+                    ->where('metakeys', 'LIKE', '%'.$term.'%')
+                    ->where('title', 'LIKE', '%'.$term.'%')
+                    ->orderBy('year', 'desc')
+                    ->get();
+            }
+            }
+            return view('browse-theses', [
+                'theses' => $theses,
+                'college' => $col,
+                'years' => Year::all(),
+                'course' => $program,
+                'courses' => Cache::get('highest_course'),
+                'taon' => Year::where('id', $request->year)->get()->first(),
+                'colleges' => College::all()->take(5),
+                'search' => $request->search,
+                'year' => Year::where('id', $year)->get()->first(),
+            ]);
 
         // return view('year', [
         //     'taon' => Year::where('id', $year)->get()->first(),
@@ -375,10 +557,20 @@ class ThesesController extends Controller
                array_push($course_that_have_theses, $course_count[$keys]);
            }
            return $course_that_have_theses;
-       });
+       }); 
+
+       $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+                    ->join('courses', 'theses.course_id', '=', 'courses.id')
+                    ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+                    ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('courses.id', $request->course)->where('approved', 1)
+                    ->where('courses.id', $request->course)
+                    ->orderBy('year', 'desc')
+                    ->get();
+
+
         return view('courses', [
             'program' => Course::where('id', $request->course)->get()->first(),
-            'theses' => Theses::where('course_id', $request->course)->where('approved', 1)->get(),
+            'theses' => $theses,
             'college' => College::all(),
             'years' => Year::all(),
             'courses' => Cache::get('highest_course'),
@@ -478,26 +670,35 @@ class ThesesController extends Controller
             array_push($courses, $thesis->course_id);
         }
         $course_count = array_count_values($courses);
-        
+    
         foreach($course_count as $key => $value){
             $course_count[$key] = Course::where('id', $key)->get()->first();
             array_push($course_that_have_theses, $course_count[$key]);
         }
         //end of this block
-        
         $term = $request->searchTitle;
-        return view('browse-theses', [
-            'theses' => Theses::join('years', 'theses.year_id', '=', 'years.id')
+        if($request->college != null){
+            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
+            ->join('courses', 'theses.course_id', '=', 'courses.id')
+            ->join('colleges as col', 'theses.college_id', '=', 'col.id')
+            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'col.id as ', 'col.college', 'years.id as yearID', 'years.year')->where('col.id', $request->college)->where('approved', 1)->orWhere('title', 'LIKE', '%'.$term.'%')->where('metakeys', 'LIKE', '%'.$term.'%')
+            ->get();
+        }else{
+            $theses = Theses::join('years', 'theses.year_id', '=', 'years.id')
             ->join('courses', 'theses.course_id', '=', 'courses.id')
             ->join('colleges', 'theses.college_id', '=', 'colleges.id')
-            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('title', 'LIKE', '%'.$term.'%')->orWhere('course', 'LIKE', '%'.$term.'%')
-            ->get(),
-            'college' => College::search($term)->get(),
+            ->select('theses.*', 'courses.id as courseID', 'courses.course', 'colleges.id as collegeID', 'colleges.college', 'years.id as yearID', 'years.year')->where('title', 'LIKE', '%'.$term.'%')->orWhere('metakeys', 'LIKE', '%'.$term.'%')->where('approved', 1)->orWhere('course', 'LIKE', '%'.$term.'%')
+            ->get();
+        }
+        return view('browse-theses', [
+            'theses' => $theses,
+            'college' => College::where('id',$request->college)->get()->first(),
             'years' => Year::all(),
             'courses' => $course_that_have_theses,
             'programs' => Course::search($term)->get()->take(5),
             'colleges' => College::all()->take(5),
             'search' => $term,
+            'filter' => $request->college,
         ]);
     }
 

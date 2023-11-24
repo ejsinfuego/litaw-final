@@ -3,7 +3,7 @@
         <div class="sm:flex sm:items-center sm:justify-between">
             <a href="#" class="flex items-center mb-4 sm:mb-0">
                 <img src="{{asset('img/logo_footer.png')}}" class="h-8 mr-3" alt="LITAW Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">LITAW</span>
+                <span class="mt-54text-lg font-semibold whitespace-nowrap text-white">a Digital Respository</span>
             </a>
             <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
                 <li>
@@ -42,50 +42,49 @@
     const modal = document.getElementById('loginModal');
     modal.classList.toggle('hidden');
     }
-  
-    function hideLoginModal() {
+    
+      function hideLoginModal() {
     const modal = document.getElementById('loginModal');
     modal.classList.add('hidden');
     }
 
+    var years = document.querySelectorAll(".year");
+    var title = document.querySelectorAll(".title");
 
-
-var years = document.querySelectorAll(".year");
-
-const descOrAsc = document.getElementById("orderType"); 
-
-const filter = document.getElementById('filter');
-
-filter.addEventListener('change', function(){
-  var years = filter.value;
-  console.log(years);
-})
-
-descOrAsc.addEventListener('change', function(){
-  const value = filter.value;
-
-  const theses = document.querySelectorAll('.thesis');
-  years.forEach(year => {
+    const descOrAsc = document.getElementById('orderType');
+    const filter = document.getElementById('filter');
+    
     //sort
-    for (let i = 0; i < years.length; i++) {
-      for (let j = i + 1; j < years.length; j++) {
-            if (years[i].innerText > years[j].innerText) {
-          let temp = years[i].innerText;
-          //arrange thesis
-          theses[i].parentNode.insertBefore(theses[j], theses[0]);
-        }else{
-          theses[i].parentNode.insertBefore(theses[j], theses[i]);
-        }
-        
-      }
+      var sortedYears = Array.from(years).sort();
+  var sortedTitles = Array.from(title).sort();
+
+  const thesis = document.querySelectorAll(".thesis-container");
+  filter.addEventListener('change', function(){
+    if (filter.value == "year") {
+      console.log(filter.options);
+      
     }
   });
-})
-  
+
+  function sortYears() {
+    if (descOrAsc.value == "desc") {
+      sortedYears.reverse();
+    }
+    for (var i = 0; i < sortedYears.length; i++) {
+      years[i].parentNode.insertBefore(sortedYears[i], years[i].parentNode.firstChild);
+    }
+  }
+
+  function sortTitle() {
+    
+  }
+    
+    
+    
+
 </script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-  
   
   </body>
   </html>

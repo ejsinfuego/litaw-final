@@ -7,28 +7,45 @@
 
 <div class="flex flex-col md:flex-row items-center justify-between ml-4 mr-4 mt-4 md:ml-24 lg:mr-24">
   <div class="flex md:flex-row  md:space-y-0 md:space-x-4 space-x-2">
-    <div>
-      <select class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
-        <option value="relevance">Sort by: Relevance</option>
-        <option value="title">Recent</option>
-        <option value="title">Oldest</option>
-        <option value="title">Most Viewed</option>
-        <option value="title">Most Cited</option>
-        <option value="author">Title A-Z</option>
-        <option value="year">Title Z-A</option>
-    </select>
-    </div>
 
-    <div>
-      <select class="input input-select border-gray-400 rounded-md focus:ring-0 focus:border-gray-600 border py-1 px-4">
-        <option value="relevance">Show 10 per page</option>
-        <option value="title">Show 10 per page</option>
-        <option value="title">Show 25 per page</option>
-        <option value="title">Show 50 per page</option>
-        <option value="title">Show 75 per page</option>
-        <option value="title">Show 100 per page</option>
-    </select>
-    </div>
+
+    <!-- component -->
+<style>
+  .dropdown:hover > .dropdown-content {
+    display: block;
+  }
+  </style>
+  
+  <div class="dropdown inline-block relative">
+    <button class="bg-gray-100 border border-gray-300 text-gray-700 font-semibold py-1 px-4 rounded inline-flex items-center">
+      <span>Sort by: </span>
+    </button>
+    <ul class="dropdown-content border bg-gray-200 border-gray-300 rounded-lg absolute hidden text-gray-700 pt-1">
+          <li class="dropdown">
+            <a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Year
+            <i class="ml-2 fa fa-arrow-right"></i>
+
+            </a>
+              <ul class="dropdown-content absolute hidden text-gray-700 pl-5 ml-14 -mt-10 rounded-lg">
+                <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', [$college->id,"cat=year", "ascOrDesc=asc"])}}">Ascending</a>
+                  <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', [$college->id,"cat=year", "ascOrDesc=desc"])}}">Descending</a>
+              </ul>
+          </li>
+      <li class="dropdown">
+        <a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Title
+          <i class="ml-2 fa fa-arrow-right"></i>
+        </a>
+          <ul class="dropdown-content absolute hidden text-gray-700 pl-5 ml-14 -mt-10 rounded-lg">
+            <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', [$college->id,"cat=title", "ascOrDesc=asc"])}}">Ascending</a>
+              <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{{ route('years', [$college->id,"cat=title", "ascOrDesc=asc"])}}">Descending</a>
+          </ul>
+      </li>
+    </ul>
+  </div>
+
+
+      
+    
   </div>
 
   <div class="search-bar-container py-4 mt-4 md:mt-0 flex">

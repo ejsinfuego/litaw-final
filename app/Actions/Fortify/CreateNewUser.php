@@ -40,6 +40,6 @@ class CreateNewUser implements CreatesNewUsers
             'student_id' => $input['student_id'],
             'password' => Hash::make($input['password']),
             
-        ])->assignRole('student');
+        ])->assignRole('registeredUser');
     }
 }

@@ -157,7 +157,7 @@ function showTerms(){
       @guest
       <li id="loginNavItem" class="hidden md:block list-none">       
         <div class="md:flex items-center justify-end">
-            <a href="#" onclick="toggleLoginModal()" class="block py-1 ml-3 md:py-2 md:px-1 font-medium-21 md:w-24 text-white md:bg-orange-600 hover:bg-transparent hover:border-white md:border-orange-600 inline-flex items-center justify-center md:space-x-1 rounded-lg md:border">
+            <a href="{{ route('login') }}" class="block py-1 ml-3 md:py-2 md:px-1 font-medium-21 md:w-24 text-white md:bg-orange-600 hover:bg-transparent hover:border-white md:border-orange-600 inline-flex items-center justify-center md:space-x-1 rounded-lg md:border">
                 <span>Login</span>
             </a>               
         </div>  

@@ -53,7 +53,8 @@ class RolesController extends Controller
     }
 
     public function unban(User $user)
-    {  
+    {   
+        User::where('id', $user->id)->update(['ban' => '']);
         $user->assignRole('registeredUser');
         return redirect(route('moderator.users'));
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('filename');
             $table->longText('abstract');
             $table->string('metakeys');
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }

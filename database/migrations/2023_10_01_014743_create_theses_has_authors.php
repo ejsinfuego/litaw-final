@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('theses_has_authors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author_id')->references('id')->on('authors');
-            $table->foreignId('theses_id')->references('id')->on('theses');
+            $table->foreignId('author_id');
+            $table->foreignId('theses_id');
             $table->timestamps();
         });
     }

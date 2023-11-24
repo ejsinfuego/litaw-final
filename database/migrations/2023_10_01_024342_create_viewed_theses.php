@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('viewed_theses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('theses_id')->references('id')->on('theses');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('theses_id');
             $table->string('session_id');
             $table->timestamps();
         });

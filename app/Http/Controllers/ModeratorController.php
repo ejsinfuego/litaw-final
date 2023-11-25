@@ -79,7 +79,6 @@ class ModeratorController extends Controller
         }
         return view('moderator.users', [
             'users' => $users,
-            
         ]);
     }
     /**

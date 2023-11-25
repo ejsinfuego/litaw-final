@@ -62,6 +62,7 @@ Route::middleware(['auth', 'verified', 'role:contentModerator|admin'])->name('mo
     Route::patch('/{user}/ban', [RolesController::class, 'ban'])->name('ban');
     Route::get('/unban/{user}', [RolesController::class,'unban'])->name('unban');
     Route::get('/stats', [ThesesController::class, 'stats'])->name('stats');
+    Route::get('/promote/{user}', [RolesController::class, 'update'])->name('promote');
 });
 
 

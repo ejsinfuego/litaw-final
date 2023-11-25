@@ -48,7 +48,7 @@ class RolesController extends Controller
         ]);
         User::where('id', $user->id)->update(['ban' => $request->reason]);
 
-        $user->removeRole('registeredUser');
+    $user->removeRole('registeredUser');
         return redirect(route('moderator.users'));
     }
 
@@ -73,6 +73,10 @@ class RolesController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $user = User::find($id);
+        $user->assignRole('contentModerator');
+        return redirect(route('moderator.users'));
+
     }
 
     /**

@@ -59,6 +59,9 @@
     </thead>
     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
       @foreach ($users as $user)
+      @if(Auth::user()->id == $user->id)
+      @continue
+      @endif
       <tr class="hover:bg-gray-50">
          <td class="flex gap-3 px-6 py-4 font-normal text-gray-900">
           <div class="relative h-10 w-max">
@@ -132,6 +135,12 @@
             @endif
           </div>         
           </div>
+        @endif
+        @if($user->hasRole('registeredUser'))
+        <div class="flex justify-end gap-4">
+        <span class="inline-flex items-center gap-1 rounded-full bg-green-300 px-2 py-1 p text-xs font-semibold text-green-500">  <a x-data="{ tooltip: 'Edite' }" href="{{route('moderator.promote', $user->id)}}">
+          PROMOTE</a></span>
+        </div>
         @endif
       </td>
       </form>

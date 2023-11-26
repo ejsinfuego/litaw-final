@@ -12,14 +12,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <script src="{{asset('pdfThumbnails/pdfThumbnails.js')}}" data-pdfjs-src="{{asset('pdfThumbnails/pdf.js/build/pdf.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
     <script
     src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="{{asset('pdfThumbnails/pdfThumbnails.js')}}" data-pdfjs-src="{{asset('pdfThumbnails/pdf.js/build/pdf.js')}}"></script>
+
     <script>
         tailwind.config = {
           theme: {
@@ -32,6 +33,16 @@
             }
           }
         }
+  
+    $(document).ready(function() {
+    $('.sortTable').DataTable( {
+        paging:   true,
+        ordering: false,
+        info:     false,
+        responsive: true,
+        destroy: true,
+    });
+} );
   function toggleLoginNavItem() {
       var loginNavItem = document.getElementById("loginNavItem");
       loginNavItem.classList.toggle("hidden");

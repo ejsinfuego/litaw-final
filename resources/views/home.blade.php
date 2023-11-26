@@ -23,7 +23,7 @@
   <div class="relative h-56 overflow-hidden  md:h-96">
     <!-- Item 1 -->
     <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('img/cas.jpg') }});">
-      <img src="{{ asset('img/cas.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+
     </div>
     <!-- Item 2 -->
     <div class="hidden duration-100 ease-in-out bg-cover bg-no-repeat" data-carousel-item style="background-image: url({{ asset('/img/cbm1.jpg') }});">
@@ -39,7 +39,7 @@
     </div>
 
   </div>
-
+     <p class="z-700 ml-5 text-gray-700"><small><i>© Pictures of Bernel Ibalin</i></small></p>
   <!-- Slider indicators -->
   <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
     <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>

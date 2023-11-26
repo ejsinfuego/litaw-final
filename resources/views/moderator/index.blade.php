@@ -43,7 +43,7 @@
   <!-- Content for the left section -->
   <!-- ... Your content for the left section goes here ... -->
   <div class="w-auto p-9 rounded-lg border border-gray-200 shadow-md">
-  <table id="sortTable" class="w-full border-separate bg-white text-left text-sm text-gray-500 pt-5">
+  <table id="sortTable" class="sortTable w-full border-separate bg-white text-left text-sm text-gray-500 pt-5">
     <thead class="bg-gray-50">
       <tr>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Title</th>
@@ -51,10 +51,7 @@
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Year</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Status</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Submitted by</th>
-        @if (empty($theses))
-        @else
          <th scope="col" class="px-6 py-4 font-medium text-gray-900">Actions</th>
-        @endif
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -129,64 +126,5 @@
 
 
 
-<footer class="bg-navy-blue shadow dark:bg-gray-900 mt-12">
-  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-      <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="#" class="flex items-center mb-4 sm:mb-0">
-              <img src="/img/logo_footer.png" class="h-8 mr-3" alt="LITAW Logo" />
-          </a>
-          <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 text-white">
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-              </li>
-              <li>
-                  <a href="#" class="mr-4 hover:underline md:mr-6 ">Terms and Conditions</a>
-              </li>
-              <li>
-                  <a href="#" class="hover:underline">Contact</a>
-              </li>
-          </ul>
-      </div>
-      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <span class="block text-sm text-gray-500 sm:text-center text-white">© 2023 <a href="https://litaw.com/" class="hover:underline">LITAW</a>. All Rights Reserved.</span>
-  </div>
-</footer>
+<x-footer></x-footer>
 
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-
-<!--navigation toggle and login modal-->
-<script>
-
-  $(document).ready(function() {
-    $('#sortTable').DataTable( {
-        "paging":   true,
-        "ordering": false,
-        "info":     false
-    });
-} );
-  function toggleLoginNavItem() {
-      var loginNavItem = document.getElementById("loginNavItem");
-      loginNavItem.classList.toggle("hidden");
-  }
-
-  function toggleLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.toggle('hidden');
-}
-
-  function hideLoginModal() {
-  const modal = document.getElementById('loginModal');
-  modal.classList.add('hidden');
-}
-
-</script>
-
-</body>
-</html>
